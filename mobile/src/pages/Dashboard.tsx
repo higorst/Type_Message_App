@@ -28,8 +28,12 @@ export default function Conversations() {
 
     const [conversations, setConversations] = useState<Conversation[]>([])
 
-    function handleChangeOption(option: string) {
-        console.log(option)
+    function handleContacts() {
+        // contacts
+    }
+
+    function handleLogout() {
+        navigation.navigate("Login")
     }
 
     useEffect(() => {
@@ -165,9 +169,9 @@ export default function Conversations() {
             </ScrollView>
 
             <View style={DashboardStyles.navigator}>
-                <Option type="message" selected onPress={() => handleChangeOption("Conversas")}/>
-                <Option type="contact" onPress={() => handleChangeOption("Contatos")}/>
-                <Option type="logout" onPress={() => handleChangeOption("Logout")}/>
+                <Option type="message" selected />
+                <Option type="contact" onPress={handleContacts}/>
+                <Option type="logout" onPress={handleLogout}/>
             </View>
         </View>
     )

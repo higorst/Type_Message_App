@@ -6,6 +6,7 @@ import { createStackNavigator } from '@react-navigation/stack'
 const { Navigator, Screen } = createStackNavigator()
 
 // pages
+import Login from './pages/Login'
 import Dashboard from './pages/Dashboard'
 import Conversations from './pages/Conversation'
 import Info from './pages/Info'
@@ -19,6 +20,7 @@ export default function Routes() {
                     backgroundColor: '#ffffff'
                 }
             }}>
+                <Screen name="Login" component={Login}/>
                 <Screen name="Dashboard" component={Dashboard}/>
                 <Screen name="Conversations" component={Conversations}/>
                 <Screen name="Info" component={Info}/>
