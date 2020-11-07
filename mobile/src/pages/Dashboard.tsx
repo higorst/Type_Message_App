@@ -167,7 +167,7 @@ export default function Conversations() {
             <View style={DashboardStyles.navigator}>
                 <Option type="message" selected onPress={() => handleChangeOption("Conversas")}/>
                 <Option type="contact" onPress={() => handleChangeOption("Contatos")}/>
-                <Option type="configuration" onPress={() => handleChangeOption("Configuration")}/>
+                <Option type="logout" onPress={() => handleChangeOption("Logout")}/>
             </View>
         </View>
     )

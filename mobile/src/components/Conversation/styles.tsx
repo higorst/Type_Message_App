@@ -12,19 +12,23 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
 
-        marginBottom: 10,
         borderRadius: 20,
+    },
+    avatar_box: {
+        height: 64,
+        width: 64,
+        borderRadius: 100,
+        left: 10,
+        elevation: 4,
     },
     avatar: {
         height: 64,
         width: 64,
         borderRadius: 100,
         position: 'relative',
-        left: 10,
-        elevation: 1,
 
         borderWidth: 1,
-        borderColor: Color.secondary,
+        borderColor: Color.conversation,
     },
     
     context: {
@@ -34,21 +38,25 @@ const styles = StyleSheet.create({
         padding: 5,
         paddingLeft: 20,
 
-        backgroundColor: '#f5a18e',
+        backgroundColor: Color.conversation,
         borderRadius: 20,
         marginRight: Dimensions.get('window').width * 0.03,
+        elevation: 3,
     },
     up: {
         flexDirection: 'row',
         justifyContent: 'space-between',
-        marginBottom: 5,
-        marginTop: 5,
-        padding: 5,
+        // padding: 5,
+        paddingTop: 3,
+        paddingRight: 3,
     },
     down: {
         flexDirection: 'row',
         justifyContent: 'space-between',
-        padding: 5,
+        // padding: 5,
+        paddingTop: 3,
+        paddingRight: 3,
+        paddingBottom: 5,
     },
 
     user_name: {

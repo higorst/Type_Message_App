@@ -34,15 +34,15 @@ export default function Header(props: HeaderProps) {
                 </BorderlessButton>
             ) : null}
 
-            <Image source={props.avatar} style={styles.avatar} />
+            { props.logout ? (
+                <BorderlessButton onPress={handleLogout} >
+                    <Feather name="sliders" size={24} color={Color.secondary} />
+                </BorderlessButton>
+            ) : null}
 
             <Text style={styles.user_name}>{props.user_name}</Text>
 
-            { props.logout ? (
-                <BorderlessButton onPress={handleLogout} >
-                    <Feather name="log-out" size={24} color={Color.secondary} />
-                </BorderlessButton>
-            ) : null}
+            <Image source={props.avatar} style={styles.avatar} />
         </View>
     )
 }

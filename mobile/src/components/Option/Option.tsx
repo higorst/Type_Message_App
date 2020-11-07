@@ -18,7 +18,7 @@ export default function Header(props: OptionProps) {
                 name={
                     props.type === "message" ? "message-square" :
                     props.type === "contact" ? "plus-square" :
-                    "sliders"
+                    "log-out"
                 }
                 size={24}
                 color={props.selected ? Color.secondary : Color.white}

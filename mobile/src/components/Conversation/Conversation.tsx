@@ -8,7 +8,9 @@ import avatar from '../../assets/images/avatar.jpg'
 export default function Conversation() {
     return (
         <View style={styles.container}>
-            <Image source={avatar} style={styles.avatar} />
+            <View style={styles.avatar_box}>
+                <Image source={avatar} style={styles.avatar} /> 
+            </View>
             <View style={styles.context}>
                 <View style={styles.up}>
                     <Text style={styles.user_name}>Mary</Text>
