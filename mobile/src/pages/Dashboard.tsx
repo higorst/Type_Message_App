@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { View, Text } from 'react-native'
 
-import { useNavigation, useFocusEffect } from '@react-navigation/native'
+import { useNavigation, useFocusEffect, useRoute } from '@react-navigation/native'
 
 // components
 import Header from '../components/Header/Header'
@@ -22,11 +22,23 @@ interface Conversation {
     }
 }
 
+interface UserLogged {
+    id: string;
+    user: string;
+    password: string;
+    image: string;
+}
+
 export default function Conversations() {
 
     const navigation = useNavigation()
 
     const [conversations, setConversations] = useState<Conversation[]>([])
+
+    // carregar dados de usuário logado
+    const route = useRoute()
+    const params = route.params as UserLogged
+    const { id, user, password, image } = params
 
     function handleContacts() {
         // contacts
@@ -37,141 +49,141 @@ export default function Conversations() {
     }
 
     useEffect(() => {
-      // implementar método de pegar mensagens
-      setConversations([
-        {
-            id: '1',
-            contact: 'Jhon',
-            last_message: {
-                name_sender: 'John',
-                message: 'Are you there?',
+        // implementar método de pegar mensagens
+        setConversations([
+            {
+                id: '1',
+                contact: 'Jhon',
+                last_message: {
+                    name_sender: 'John',
+                    message: 'Are you there?',
+                },
             },
-        },
-        {
-            id: '2',
-            contact: 'Jhon',
-            last_message: {
-                name_sender: 'John',
-                message: 'Are you there?',
+            {
+                id: '2',
+                contact: 'Jhon',
+                last_message: {
+                    name_sender: 'John',
+                    message: 'Are you there?',
+                },
             },
-        },
-        {
-            id: '3',
-            contact: 'Jhon',
-            last_message: {
-                name_sender: 'John',
-                message: 'Are you there?',
+            {
+                id: '3',
+                contact: 'Jhon',
+                last_message: {
+                    name_sender: 'John',
+                    message: 'Are you there?',
+                },
             },
-        },
-        {
-            id: '4',
-            contact: 'Jhon',
-            last_message: {
-                name_sender: 'John',
-                message: 'Are you there?',
+            {
+                id: '4',
+                contact: 'Jhon',
+                last_message: {
+                    name_sender: 'John',
+                    message: 'Are you there?',
+                },
             },
-        },
-        {
-            id: '5',
-            contact: 'Jhon',
-            last_message: {
-                name_sender: 'John',
-                message: 'Are you there?',
+            {
+                id: '5',
+                contact: 'Jhon',
+                last_message: {
+                    name_sender: 'John',
+                    message: 'Are you there?',
+                },
             },
-        },
-        {
-            id: '6',
-            contact: 'Jhon',
-            last_message: {
-                name_sender: 'John',
-                message: 'Are you there?',
+            {
+                id: '6',
+                contact: 'Jhon',
+                last_message: {
+                    name_sender: 'John',
+                    message: 'Are you there?',
+                },
             },
-        },
-        {
-            id: '7',
-            contact: 'Jhon',
-            last_message: {
-                name_sender: 'John',
-                message: 'Are you there?',
+            {
+                id: '7',
+                contact: 'Jhon',
+                last_message: {
+                    name_sender: 'John',
+                    message: 'Are you there?',
+                },
             },
-        },
-        {
-            id: '8',
-            contact: 'Jhon',
-            last_message: {
-                name_sender: 'John',
-                message: 'Are you there?',
+            {
+                id: '8',
+                contact: 'Jhon',
+                last_message: {
+                    name_sender: 'John',
+                    message: 'Are you there?',
+                },
             },
-        },
-        {
-            id: '9',
-            contact: 'Jhon',
-            last_message: {
-                name_sender: 'John',
-                message: 'Are you there?',
+            {
+                id: '9',
+                contact: 'Jhon',
+                last_message: {
+                    name_sender: 'John',
+                    message: 'Are you there?',
+                },
             },
-        },
-        {
-            id: '10',
-            contact: 'Jhon',
-            last_message: {
-                name_sender: 'John',
-                message: 'Are you there?',
+            {
+                id: '10',
+                contact: 'Jhon',
+                last_message: {
+                    name_sender: 'John',
+                    message: 'Are you there?',
+                },
             },
-        },
-        {
-            id: '11',
-            contact: 'Jhon',
-            last_message: {
-                name_sender: 'John',
-                message: 'Are you there?',
+            {
+                id: '11',
+                contact: 'Jhon',
+                last_message: {
+                    name_sender: 'John',
+                    message: 'Are you there?',
+                },
             },
-        },
-        {
-            id: '12',
-            contact: 'Jhon',
-            last_message: {
-                name_sender: 'John',
-                message: 'Are you there?',
+            {
+                id: '12',
+                contact: 'Jhon',
+                last_message: {
+                    name_sender: 'John',
+                    message: 'Are you there?',
+                },
             },
-        },
-        {
-            id: '13',
-            contact: 'Jhon',
-            last_message: {
-                name_sender: 'John',
-                message: 'Are you there?',
+            {
+                id: '13',
+                contact: 'Jhon',
+                last_message: {
+                    name_sender: 'John',
+                    message: 'Are you there?',
+                },
             },
-        },
-        {
-            id: '15',
-            contact: 'Jhon',
-            last_message: {
-                name_sender: 'John',
-                message: 'Are you there?',
+            {
+                id: '15',
+                contact: 'Jhon',
+                last_message: {
+                    name_sender: 'John',
+                    message: 'Are you there?',
+                },
             },
-        },
-      ])
+        ])
     }, [])
 
-    return(
+    return (
         <View style={DashboardStyles.container}>
-            <Header user_name="Olá Jhon" avatar={avatar} logout={true} />
+            <Header user_name={`Olá ${user}`} avatar={image} logout={true} />
 
             <ScrollView style={DashboardStyles.scrollview}>
-                { conversations.map(conversation => {
-                    return(
-                        <Conversation 
-                            key={conversation.id} 
+                {conversations.map(conversation => {
+                    return (
+                        <Conversation
+                            key={conversation.id}
                         />
                     )
-                }) }
+                })}
             </ScrollView>
 
             <View style={DashboardStyles.navigator}>
                 <Option type="message" selected />
-                <Option type="contact" onPress={handleContacts}/>
-                <Option type="logout" onPress={handleLogout}/>
+                <Option type="contact" onPress={handleContacts} />
+                <Option type="logout" onPress={handleLogout} />
             </View>
         </View>
     )

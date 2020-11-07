@@ -8,28 +8,28 @@ const LoginStyles = StyleSheet.create({
     input_box: {
         backgroundColor: Color.primary,
         width: Dimensions.get('screen').width,
-        height: Dimensions.get('screen').height * 0.78,
+        height: Dimensions.get('screen').height * 0.68,
 
         borderTopLeftRadius: 25,
         borderTopRightRadius: 25,
 
-        top: Dimensions.get('screen').height * 0.22,
+        top: Dimensions.get('screen').height * 0.32,
         
-        paddingTop: Dimensions.get('screen').height * 0.15,
-        paddingBottom: Dimensions.get('screen').height * 0.15,
-        
-        justifyContent: 'space-between',
+        // paddingTop: Dimensions.get('screen').height * 0.15,
+        // paddingBottom: Dimensions.get('screen').height * 0.15,
+
+        // justifyContent: 'space-between',
+        justifyContent: 'center',
         alignItems: 'center',
     },
 
     logo_box: {
         elevation: 3,
+        top: Dimensions.get('screen').height * 0.2,
     },
     logo: {
-        width: Dimensions.get('screen').height * 0.16,
-        height: Dimensions.get('screen').height * 0.16,
-
-        top: Dimensions.get('screen').height * 0.1,
+        width: Dimensions.get('screen').height * 0.2,
+        height: Dimensions.get('screen').height * 0.2,
 
         alignSelf: 'center',
         position: 'absolute',
@@ -44,9 +44,10 @@ const LoginStyles = StyleSheet.create({
         width: Dimensions.get('screen').width * 0.6,
         paddingVertical: 18,
         paddingHorizontal: 24,
-        marginBottom: 16,
         textAlignVertical: 'center',
         textAlign: 'center',
+
+        marginBottom: 20,
     },
 
     button_group: {
@@ -60,6 +61,8 @@ const LoginStyles = StyleSheet.create({
         height: 56,
         width: Dimensions.get('screen').width * 0.28,
         marginRight: Dimensions.get('screen').width * 0.01,
+
+        marginBottom: 20,
     },
     addButton: {
         backgroundColor: Color.white,
@@ -69,6 +72,8 @@ const LoginStyles = StyleSheet.create({
         height: 56,
         width: Dimensions.get('screen').width * 0.28,
         marginLeft: Dimensions.get('screen').width * 0.01,
+
+        marginBottom: 20,
     },
 
     login: {
@@ -83,7 +88,7 @@ const LoginStyles = StyleSheet.create({
         color: Color.secondary,
     },
 
-    imagesInput: {
+    imageInput: {
         backgroundColor: 'rgba(255, 255, 255, 0.5)',
         borderStyle: 'dashed',
         borderColor: Color.secondary,
@@ -93,15 +98,26 @@ const LoginStyles = StyleSheet.create({
         width: 80,
         justifyContent: 'center',
         alignItems: 'center',
-        // marginBottom: 32,
+
+        marginBottom: 20,
+        marginTop: 15,
     },
 
     uploadedImage: {
         borderRadius: 20,
         height: 80,
         width: 80,
-        // marginBottom: 32,
+
+        marginBottom: 20,
+        marginTop: 15,
     },
+
+    subtitle: {
+        color: Color.white,
+        fontFamily: 'Nunito_800ExtraBold',
+        fontSize: 14,
+        textAlign: 'center',
+    }
 })
 
 export default LoginStyles

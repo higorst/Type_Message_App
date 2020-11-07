@@ -9,7 +9,7 @@ import { Color } from '../../styles/Color';
 
 interface HeaderProps {
     user_name: string;
-    avatar: ImageSourcePropType;
+    avatar: string;
     back?: boolean;
     logout?: boolean;
 }
@@ -42,7 +42,7 @@ export default function Header(props: HeaderProps) {
 
             <Text style={styles.user_name}>{props.user_name}</Text>
 
-            <Image source={props.avatar} style={styles.avatar} />
+            <Image source={{ uri: `data:image/png;base64,${props.avatar}` }} style={styles.avatar} />
         </View>
     )
 }
