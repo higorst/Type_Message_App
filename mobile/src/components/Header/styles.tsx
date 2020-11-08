@@ -17,7 +17,9 @@ const styles = StyleSheet.create({
     user_name: {
         fontFamily: 'Nunito_600SemiBold',
         color: Color.gray_ton,
-        fontSize: 16
+        fontSize: 16,
+        maxWidth: Dimensions.get('screen').width * 0.5,
+        textAlign: 'center'
     },
     avatar: {
         width: 64,
