@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Image, KeyboardAvoidingView, Text, View } from 'react-native';
 import * as ImagePicker from 'expo-image-picker'
-
+import Modal from 'react-native-modal'
 
 import LoginStyles from '../styles/LoginStyles'
 
@@ -9,25 +9,39 @@ import logo from '../assets/icon.png'
 import { RectButton, TextInput, TouchableOpacity } from 'react-native-gesture-handler';
 import { Feather } from '@expo/vector-icons';
 import { Color } from '../styles/Color';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useFocusEffect } from '@react-navigation/native';
+
+import PopupStyles from '../styles/PopupStyles'
+
+import Constants from '../constants/Constants'
 
 
 export default function Login() {
 
     const navigation = useNavigation()
 
-    const [image, setImage] = useState('')    
+    const [id, setId] = useState('')
+    const [image, setImage] = useState('')
     const [user, setUser] = useState('')
     const [password, setPassword] = useState('')
+    
+    const [popup, setPopup] = useState({ visible: false, message: ''})
+    function handlePopup(message: string) {
+        setPopup({ visible: true, message: message})
+    }
 
-    function handleLogin(){
-        // login
-        navigation.navigate("Dashboard", {
-            id: '1',
-            user: user,
-            password: password,
-            image: image
-        })
+    function handleLogin() {
+        setId('1')
+        // if (id && user && password && image) {
+        if (false) {
+        } else {
+            navigation.navigate("Dashboard", {
+                id: id,
+                user: user,
+                password: password,
+                image: image,
+            })
+        }
     }
 
     async function handleSelectImage() {
@@ -40,7 +54,7 @@ export default function Login() {
         const result = await ImagePicker.launchImageLibraryAsync({
             allowsEditing: true,
             base64: true,
-            aspect: [4, 3],
+            aspect: [1, 1],
             quality: 1,
             mediaTypes: ImagePicker.MediaTypeOptions.Images
         })
@@ -56,14 +70,28 @@ export default function Login() {
         // add acount
     }
 
-    return(
+    return (
         <KeyboardAvoidingView style={LoginStyles.container} behavior="position" enabled>
+            <Modal 
+                isVisible={popup.visible}
+                animationIn="bounceIn"
+                animationOut="bounceOut"
+                hideModalContentWhileAnimating={false}
+                animationInTiming={1000}
+                animationOutTiming={500}
+                onShow={() => setTimeout( () => setPopup({ visible: false, message: popup.message}), Constants.timeoutPopup)}
+            >
+                <View style={PopupStyles.container}>
+                    <Text>{popup.message}</Text>
+                </View>
+            </Modal>
+
             <View style={LoginStyles.logo_box}>
-                <Image source={logo} style={LoginStyles.logo}/>
+                <Image source={logo} style={LoginStyles.logo} />
             </View>
 
-            <View style={LoginStyles.input_box} >                
-                { image ? (
+            <View style={LoginStyles.input_box} >
+                {image ? (
                     <TouchableOpacity onPress={handleSelectImage}>
                         <Image
                             key={image}
@@ -71,14 +99,14 @@ export default function Login() {
                             style={LoginStyles.uploadedImage}
                         />
                     </TouchableOpacity>
-                    ) : (
-                    <View>
-                        <Text style={LoginStyles.subtitle}>Avatar</Text>
-                        <TouchableOpacity style={LoginStyles.imageInput} onPress={handleSelectImage}>
-                            <Feather name="plus" size={24} color={Color.secondary} />
-                        </TouchableOpacity>
-                    </View>
-                )}
+                ) : (
+                        <View>
+                            <Text style={LoginStyles.subtitle}>Avatar</Text>
+                            <TouchableOpacity style={LoginStyles.imageInput} onPress={handleSelectImage}>
+                                <Feather name="plus" size={24} color={Color.secondary} />
+                            </TouchableOpacity>
+                        </View>
+                    )}
                 <Text style={LoginStyles.subtitle}>Usuário</Text>
                 <TextInput
                     style={LoginStyles.input}

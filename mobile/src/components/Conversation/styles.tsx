@@ -6,7 +6,7 @@ const avatarLenght = Dimensions.get('window').width * 0.25
 const styles = StyleSheet.create({
     container: {
         width: Dimensions.get('window').width,
-        height: avatarLenght,
+        height: avatarLenght * 1,
 
         flexDirection: 'row',
         justifyContent: 'center',

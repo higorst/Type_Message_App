@@ -1,9 +1,12 @@
 import { Dimensions, StyleSheet } from 'react-native'
+import { Color } from '../../styles/Color';
 
 const styles = StyleSheet.create({
     sender: {
         width: Dimensions.get('window').width * 0.7 - 10,
-        padding: 20,
+        paddingLeft: 20,
+        paddingRight: 20,
+        paddingBottom: 10,
         elevation: 3,
 
         borderRadius: 20,
@@ -13,7 +16,8 @@ const styles = StyleSheet.create({
         // sender
         marginLeft: Dimensions.get('window').width * 0.3,
         marginRight: 5,
-        backgroundColor: '#80b6ff'
+        // backgroundColor: '#80b6ff'
+        backgroundColor: Color.primary
     },
     receiver: {
         width: Dimensions.get('window').width * 0.7 - 10,
@@ -29,12 +33,19 @@ const styles = StyleSheet.create({
         // receiver
         marginRight: Dimensions.get('window').width * 0.3,
         marginLeft: 5,
-        backgroundColor: '#ffffff'
+        backgroundColor: Color.white
     },
 
     message: {
         fontFamily: 'Nunito_600SemiBold',
         fontSize: 14,
+        color: Color.primary
+    },
+
+    message_sender: {
+        fontFamily: 'Nunito_600SemiBold',
+        fontSize: 14,
+        color: Color.white,
     },
 
     contact: {
@@ -43,6 +54,7 @@ const styles = StyleSheet.create({
         fontSize: 12,
         marginBottom: 5,
         marginTop: 5,
+        color: Color.secondary
     },
 })
 

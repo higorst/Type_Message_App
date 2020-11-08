@@ -8,7 +8,7 @@ const { Navigator, Screen } = createStackNavigator()
 // pages
 import Login from './pages/Login'
 import Dashboard from './pages/Dashboard'
-import Conversations from './pages/Conversation'
+import Conversation from './pages/Conversation'
 import Info from './pages/Info'
 
 export default function Routes() {
@@ -22,7 +22,7 @@ export default function Routes() {
             }}>
                 <Screen name="Login" component={Login}/>
                 <Screen name="Dashboard" component={Dashboard}/>
-                <Screen name="Conversations" component={Conversations}/>
+                <Screen name="Conversation" component={Conversation}/>
                 <Screen name="Info" component={Info}/>
             </Navigator>
         </NavigationContainer>

@@ -11,7 +11,10 @@ interface HeaderProps {
     user_name: string;
     avatar: string;
     back?: boolean;
-    logout?: boolean;
+    configuration?: boolean;
+    delete?: boolean;
+    onPressDelete?: any;
+    onPressConfiguration?: any;
 }
 
 export default function Header(props: HeaderProps) {
@@ -22,20 +25,16 @@ export default function Header(props: HeaderProps) {
         navigation.navigate('Dashboard')
     }
 
-    function handleLogout() {
-        // logout
-    }
-
     return (
         <View style={styles.container}>
             { props.back ? (
                 <BorderlessButton onPress={navigation.goBack} >
-                    <Feather name="arrow-left" size={24} color="#15b6d6" />
+                    <Feather name="arrow-left" size={24} color={Color.secondary} />
                 </BorderlessButton>
             ) : null}
 
-            { props.logout ? (
-                <BorderlessButton onPress={handleLogout} >
+            { props.configuration ? (
+                <BorderlessButton onPress={props.onPressConfiguration} >
                     <Feather name="sliders" size={24} color={Color.secondary} />
                 </BorderlessButton>
             ) : null}
@@ -43,6 +42,12 @@ export default function Header(props: HeaderProps) {
             <Text style={styles.user_name}>{props.user_name}</Text>
 
             <Image source={{ uri: `data:image/png;base64,${props.avatar}` }} style={styles.avatar} />
+
+            { props.delete ? (
+                <BorderlessButton onPress={props.onPressDelete} >
+                    <Feather name="trash" size={24} color={Color.secondary} />
+                </BorderlessButton>
+            ) : null}
         </View>
     )
 }
