@@ -19,10 +19,27 @@ interface ConversationProps {
 
 export default function Conversation(props: ConversationProps) {
     return (
-        <TouchableOpacity 
+        <TouchableOpacity
             onPress={props.onPress}
             style={styles.container}>
-            <View style={styles.avatar_box}>
+            <View style={styles.box_2}>
+
+                <View style={styles.box_2_row_1}>
+                    <Text style={styles.user_name}>{props.contact}</Text>
+                    <View style={styles.number_box}>
+                        <Text style={styles.number}>{props.n_lidas}</Text>
+                    </View>
+                    <Text style={styles.time}>{props.time}</Text>
+                </View>
+                <View style={styles.box_2_row_2}>
+                    <Text style={styles.message}>{props.last_message.message}</Text>
+                </View>
+
+            </View>
+            <View style={styles.box_1}>
+                <Image source={{ uri: `data:image/png;base64,${props.avatar}` }} style={styles.contact_image} />
+            </View>
+            {/* <View style={styles.avatar_box}>
                 <Image source={{ uri: `data:image/png;base64,${props.avatar}` }} style={styles.avatar} /> 
             </View>
             <View style={styles.context}>
@@ -36,7 +53,7 @@ export default function Conversation(props: ConversationProps) {
                         <Text style={styles.number}>{props.n_lidas}</Text>
                     </View>
                 </View>
-            </View>
+            </View> */}
         </TouchableOpacity>
     )
 }
