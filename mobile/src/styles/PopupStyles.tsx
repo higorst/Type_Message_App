@@ -15,7 +15,13 @@ const PopupStyles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         alignSelf: 'center',
-    }
+    },
+    message: {
+        textAlign:'center',
+        fontSize: 16,
+        fontFamily: 'Nunito_700Bold',
+        color: Color.white,
+    },
 })
 
 export default PopupStyles

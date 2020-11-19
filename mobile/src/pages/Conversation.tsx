@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { View, KeyboardAvoidingView, TextInput, TouchableOpacity } from 'react-native'
+import { View, KeyboardAvoidingView, TextInput, TouchableOpacity, Keyboard } from 'react-native'
 
 import { useNavigation, useFocusEffect, useRoute } from '@react-navigation/native';
 
@@ -21,12 +21,13 @@ interface Message {
 interface ContactProps {
     id: string;
     user: string;
-    contact: string;
-    avatar: string;
-    time: string;
+    image: string;
+    id_contact: string;
+    user_contact: string;
+    image_contact: string;
 }
 
-export default function Conversations(props: ContactProps) {
+export default function Conversation(props: ContactProps) {
 
     const navigation = useNavigation()
 
@@ -36,7 +37,7 @@ export default function Conversations(props: ContactProps) {
 
     const routes = useRoute()
     const params = routes.params as ContactProps
-    const { id, user, contact, avatar } = params
+    const { id, user, image, id_contact, user_contact, image_contact } = params
 
     function handleSendMessage() {
         if (lastMessage === ''){
@@ -54,6 +55,7 @@ export default function Conversations(props: ContactProps) {
     }
 
     function handleDeleteConversation(){
+        Keyboard.dismiss()
         navigation.goBack()
     }
 
@@ -99,7 +101,7 @@ export default function Conversations(props: ContactProps) {
 
     return(
         <KeyboardAvoidingView style={ConversationStyles.container}>
-            <Header user_name={contact} avatar={avatar} onPressDelete={handleDeleteConversation} delete back />
+            <Header user_name={user_contact} avatar={image_contact} onPressDelete={handleDeleteConversation} delete back />
 
             <ScrollView 
                 ref={ref => setScroll(ref ? ref : scroll)}
@@ -111,7 +113,7 @@ export default function Conversations(props: ContactProps) {
                         <Message 
                             key={message.id}
                             sender={message.sender} 
-                            contact={message.sender ? "Você" : contact}
+                            contact={message.sender ? "Você" : user_contact}
                             message={message.message}
                             time={message.time}
                         />

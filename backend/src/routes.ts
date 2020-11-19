@@ -1,20 +1,13 @@
 import { request, Router } from 'express'
+import ContactController from './controllers/ContactController'
 
 const routes = Router()
 
-routes.get('/messages', (request, response) => {
-    response.json({
-        messages: [
-            {
-                id: '1',
-                message: 'hi, how r u?'
-            },
-            {
-                id: '2',
-                message: 'I\'m fine and you?'
-            }
-        ]
-    })
-})
+const list_user_names = ['Mary', 'Gun', 'John']
+
+// ContactController
+routes.post('/users/create', ContactController.create)
+routes.get('/users', ContactController.index)
+routes.post('/users/verify', ContactController.verify)
 
 export default routes

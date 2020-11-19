@@ -13,6 +13,8 @@ interface HeaderProps {
     back?: boolean;
     configuration?: boolean;
     delete?: boolean;
+    devices_on?: number;
+
     onPressDelete?: any;
     onPressConfiguration?: any;
 }
@@ -36,6 +38,13 @@ export default function Header(props: HeaderProps) {
             { props.configuration ? (
                 <BorderlessButton onPress={props.onPressConfiguration} >
                     <Feather name="sliders" size={24} color={Color.secondary} />
+                </BorderlessButton>
+            ) : null}
+
+            { props.devices_on ? (
+                <BorderlessButton style={styles.online}>
+                    <Feather name="cast" size={20} color={Color.green} />
+                    <Text style={styles.devices_online}>{props.devices_on} online</Text>
                 </BorderlessButton>
             ) : null}
 

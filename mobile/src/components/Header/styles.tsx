@@ -25,6 +25,19 @@ const styles = StyleSheet.create({
         width: 64,
         height: 64,
         borderRadius: 100,
+    },
+
+    online: {
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+    devices_online: {
+        fontFamily: 'Nunito_600SemiBold',
+        color: Color.gray_ton,
+        fontSize: 12,
+        maxWidth: Dimensions.get('screen').width * 0.5,
+        textAlign: 'center'
     }
 })
 

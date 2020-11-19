@@ -44,8 +44,11 @@ const LoginStyles = StyleSheet.create({
         width: Dimensions.get('screen').width * 0.6,
         paddingVertical: 18,
         paddingHorizontal: 24,
+
         textAlignVertical: 'center',
         textAlign: 'center',
+        fontFamily: 'Nunito_700Bold',
+        color: Color.primary,
 
         marginBottom: 20,
     },

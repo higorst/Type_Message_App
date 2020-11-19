@@ -1,3 +1,3 @@
 export const numbers = {    
-    timeoutPopup: 1500,
+    timeoutPopup: 2000,
 }

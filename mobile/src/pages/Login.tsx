@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { Image, KeyboardAvoidingView, Text, View } from 'react-native';
+import { Image, KeyboardAvoidingView, Text, View, Keyboard } from 'react-native';
 import * as ImagePicker from 'expo-image-picker'
 import Modal from 'react-native-modal'
+
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import LoginStyles from '../styles/LoginStyles'
 
@@ -15,33 +17,32 @@ import PopupStyles from '../styles/PopupStyles'
 
 import Constants from '../constants/Constants'
 
+import UserController from '../controller/UserController';
+import { User } from '../models/UserModel'
+import api from '../services/api';
+
+
+interface UserLogged {
+    id: string;
+    user: string;
+    password: string;
+    image: string;
+    logged: boolean;
+}
 
 export default function Login() {
 
     const navigation = useNavigation()
 
+    const [verifyLogin, setVerifyLogin] = useState(false)
     const [id, setId] = useState('')
     const [image, setImage] = useState('')
     const [user, setUser] = useState('')
     const [password, setPassword] = useState('')
-    
-    const [popup, setPopup] = useState({ visible: false, message: ''})
-    function handlePopup(message: string) {
-        setPopup({ visible: true, message: message})
-    }
 
-    function handleLogin() {
-        setId('1')
-        // if (id && user && password && image) {
-        if (false) {
-        } else {
-            navigation.navigate("Dashboard", {
-                id: id,
-                user: user,
-                password: password,
-                image: image,
-            })
-        }
+    const [popup, setPopup] = useState({ visible: false, message: '' })
+    function handlePopup(message: string) {
+        setPopup({ visible: true, message: message })
     }
 
     async function handleSelectImage() {
@@ -55,7 +56,7 @@ export default function Login() {
             allowsEditing: true,
             base64: true,
             aspect: [1, 1],
-            quality: 1,
+            quality: 0.5,
             mediaTypes: ImagePicker.MediaTypeOptions.Images
         })
         if (result.cancelled) {
@@ -66,23 +67,116 @@ export default function Login() {
         setImage(image ? image : '')
     }
 
-    function handleAddAcount() {
-        // add acount
+    async function handleAddAcount() {
+        let res = false
+        await api.post('/users/verify', { user: user }).then(response => {
+            res = response.data.res
+            setId(response.data.id + user)
+        })
+        const date = new Date()
+        setId(date + user)
+        if (res) {
+            handlePopup("Já existe esse usuário!\nEscolha outro nome.")
+        } else if (id && user && password && image) {
+
+            // armazenar primeiro no servidor
+            await api.post('/users/create', {
+                id: id,
+                user: user,
+                password: password,
+                image: image,
+            })
+
+            await UserController.add(new User(
+                id,
+                user,
+                password,
+                image,
+            ))
+            handlePopup("Usuário criado com sucesso!")
+            Keyboard.dismiss()
+        } else {
+            handlePopup("Dados incompletos!")
+        }
     }
+
+    async function handleLogin() {
+        Keyboard.dismiss()
+        await UserController.handleLogin(user, password).then(async (res: any) => {
+            if (res.length > 0) {
+                // aprovado para login
+                console.log(res.length)
+                await res._array.map((item: any) => {
+                    setId(item.id)
+                    setImage(item.image)
+                })
+
+                const user_storage = JSON.stringify({
+                    id: id,
+                    user: user,
+                    password: password,
+                    image: image,
+                    logged: true,
+                })
+                await AsyncStorage.setItem('user_storage', user_storage)
+                // navigate to dashboard
+                navigation.navigate("Dashboard", {
+                    id: id,
+                    user: user,
+                    password: password,
+                    image: image,
+                })
+
+            } else {
+                handlePopup("Dados não conferem!")
+            }
+        })
+
+    }
+
+    useEffect(() => {
+        AsyncStorage.getItem('user_storage').then(user_storage => {
+            if (user_storage) {
+                const user_: UserLogged = JSON.parse(user_storage)
+                setVerifyLogin(user_.logged)
+                setId(user_.id)
+                setUser(user_.user)
+                setPassword(user_.password)
+                setImage(user_.image)
+                
+                if(verifyLogin){
+                    navigation.navigate("Dashboard", {
+                        id: user_.id,
+                        user: user_.user,
+                        password: user_.password,
+                        image: image,
+                    })
+                }
+            } else {
+                setVerifyLogin(false)
+            }
+        })
+    })
+
+    // if (!verifyLogin){
+    //     return(
+    //         <View />
+    //     )
+    // }
 
     return (
         <KeyboardAvoidingView style={LoginStyles.container} behavior="position" enabled>
-            <Modal 
+            <Modal
                 isVisible={popup.visible}
                 animationIn="bounceIn"
                 animationOut="bounceOut"
                 hideModalContentWhileAnimating={false}
                 animationInTiming={1000}
                 animationOutTiming={500}
-                onShow={() => setTimeout( () => setPopup({ visible: false, message: popup.message}), Constants.timeoutPopup)}
+                onShow={() => setTimeout(() => setPopup({ visible: false, message: popup.message }), Constants.timeoutPopup)}
             >
                 <View style={PopupStyles.container}>
-                    <Text>{popup.message}</Text>
+                    <Text style={PopupStyles.message}>{popup.message}</Text>
                 </View>
             </Modal>
 
@@ -117,17 +211,18 @@ export default function Login() {
                 <Text style={LoginStyles.subtitle}>Senha</Text>
                 <TextInput
                     style={LoginStyles.input}
+                    autoCapitalize={"none"}
                     secureTextEntry
                     value={password}
                     onChangeText={setPassword}
                 />
                 <View style={LoginStyles.button_group}>
-                    <RectButton style={LoginStyles.loginButton} onPress={handleLogin}>
+                    <TouchableOpacity style={LoginStyles.loginButton} onPress={handleLogin}>
                         <Text style={LoginStyles.login}>Entrar</Text>
-                    </RectButton>
-                    <RectButton style={LoginStyles.addButton} onPress={handleAddAcount}>
+                    </TouchableOpacity>
+                    <TouchableOpacity style={LoginStyles.addButton} onPress={handleAddAcount}>
                         <Text style={LoginStyles.add}>Cadastrar</Text>
-                    </RectButton>
+                    </TouchableOpacity>
                 </View>
             </View>
 

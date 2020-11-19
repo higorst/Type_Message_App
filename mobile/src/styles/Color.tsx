@@ -10,4 +10,5 @@ export const Color = {
   borderHeader: '#dde3f0',
 
   white: '#ffffff',
+  green: '#FF6E4E',
 };
