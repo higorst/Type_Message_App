@@ -17,7 +17,7 @@ export default class DatabaseInit {
             // `DROP TABLE IF EXISTS messages;`,
 
             `create table if not exists users (
-                id text,
+                id text primary key,
                 user text,
                 password text,
                 image text
@@ -25,10 +25,10 @@ export default class DatabaseInit {
 
             `create table if not exists conversations (
                 id integer primary key autoincrement,
-                contact_id text,
-                contact_avatar text,
+                id_contact text,
+                image_contact text,
                 user_id_conversation text,
-                foreign key (user_id_conversation) references users (id) ON DELETE CASCADE
+                foreign key (user_id_conversation) references users (id)
             );`,
 
             `create table if not exists messages (
@@ -37,8 +37,8 @@ export default class DatabaseInit {
                 sender integer,
                 user_id text,
                 conversation_id integer,
-                foreign key (user_id) references users (id) ON DELETE CASCADE,
-                foreign key (conversation_id) references conversations (id) ON DELETE CASCADE
+                foreign key (user_id) references users (id),
+                foreign key (conversation_id) references conversations (id)
             );`,
         ];
         // sender => 1: true -/- 0: false

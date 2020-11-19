@@ -11,9 +11,9 @@ export default class ConversationController {
             tx => {
                 tx.executeSql(
                     `insert into ${table} 
-                    (contact_id, contact_avatar, user_id_conversation) 
+                    (id_contact, image_contact, user_id_conversation) 
                     values (?, ?, ?)`,
-                    [param.contact_id, param.contact_avatar, param.user_id_conversation],
+                    [param.id_contact, param.image_contact, param.user_id_conversation],
                     (_, { insertId, rows }) => {
                         console.log("id conversation insert: " + insertId);
                         resolve(insertId)
@@ -25,10 +25,10 @@ export default class ConversationController {
             }));
     }
 
-    static deleteById(id: number) {
+    static deleteById(id: string) {
         db.transaction(
             tx => {
-                tx.executeSql(`delete from ${table} where id = ?;`, [id], (_, { rows }) => {
+                tx.executeSql(`delete from ${table} where id_contact = ?;`, [id], (_, { rows }) => {
                 }), (sqlError: any) => {
                     console.log(sqlError);
                 }
@@ -38,9 +38,9 @@ export default class ConversationController {
             });
     }
 
-    static findById(id: number) {
+    static findById(id: string) {
         return new Promise((resolve, reject) => db.transaction(tx => {
-            tx.executeSql(`select * from ${table} where id=?`, [id], (_, { rows }) => {
+            tx.executeSql(`select * from ${table} where id_contact=?`, [id], (_, { rows }) => {
                 resolve(rows)
             }), (sqlError: any) => {
                 console.log(sqlError);

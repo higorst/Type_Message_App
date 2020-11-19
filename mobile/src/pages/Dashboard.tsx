@@ -18,6 +18,7 @@ import PopupStyles from '../styles/PopupStyles';
 import Constants from '../constants/Constants'
 import api from '../services/api';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import ConversationController from '../controller/ConversationController';
 
 interface Conversation {
     id: string;
@@ -54,6 +55,18 @@ export default function Dahsboard() {
         query: { user_id: user },
     })
     
+    socket.on('connect', () => {
+        console.log('Connected with server.');
+    });
+
+    socket.on('connect_error', (err: any) => {
+        console.log(err);
+        handlePopup("Falha na conexão com o servidor!\nTente novamente mais tarde!")
+    });
+    socket.on('toAll-devices-connect', (data: any) => {
+        setDevicesConnect(data.message)
+    })
+
     const [popup, setPopup] = useState({ visible: false, message: '' })
     function handlePopup(message: string) {
         setPopup({ visible: true, message: message })
@@ -94,32 +107,23 @@ export default function Dahsboard() {
 
 
     useEffect(() => {
-        socket.on('connect', () => {
-            console.log('Connected with server.');
-        });
-
-        socket.on('connect_error', (err: any) => {
-            console.log(err);
-            handlePopup("Falha na conexão com o servidor!\nTente novamente mais tarde!")
-        });
-        socket.on('toAll-devices-connect', (data: any) => {
-            setDevicesConnect(data.message)
+        ConversationController.findAll().then( (response: any) => {
+            setConversations(response._array)
         })
-
         // implementar método de pegar mensagens
-        setConversations([
-            {
-                id: '1',
-                contact: 'Mary Santos',
-                time: '18:45',
-                n_lidas: 10,
-                avatar: 'base64',
-                last_message: {
-                    name_sender: 'John',
-                    message: 'Are you there?',
-                },
-            },
-        ])
+        // setConversations([
+        //     {
+        //         id: '1',
+        //         user: 'Mary Santos',
+        //         time: '18:45',
+        //         n_lidas: 10,
+        //         image: 'base64',
+        //         last_message: {
+        //             name_sender: 'John',
+        //             message: 'Are you there?',
+        //         },
+        //     },
+        // ])
 
     }, [])
 

@@ -71,10 +71,8 @@ export default function Login() {
         let res = false
         await api.post('/users/verify', { user: user }).then(response => {
             res = response.data.res
-            setId(response.data.id + user)
+            setId(response.data.id)
         })
-        const date = new Date()
-        setId(date + user)
         if (res) {
             handlePopup("Já existe esse usuário!\nEscolha outro nome.")
         } else if (id && user && password && image) {
@@ -128,34 +126,59 @@ export default function Login() {
                 })
 
             } else {
-                handlePopup("Dados não conferem!")
+                api.post('/users/login', {
+                    user: user,
+                    password: password
+                }).then((response: any) => {
+                    
+                    let { id, user, password, image } = response.data
+                    if (!id) {
+                        handlePopup("Dados não conferem!")
+                    } else {
+                        const user_storage = JSON.stringify({
+                            id: id,
+                            user: user,
+                            password: password,
+                            image: image,
+                            logged: true,
+                        })
+                        AsyncStorage.setItem('user_storage', user_storage)
+                        // navigate to dashboard
+                        navigation.navigate("Dashboard", {
+                            id: id,
+                            user: user,
+                            password: password,
+                            image: image,
+                        })
+                    }
+                })
             }
         })
 
     }
 
     useEffect(() => {
-        AsyncStorage.getItem('user_storage').then(user_storage => {
-            if (user_storage) {
-                const user_: UserLogged = JSON.parse(user_storage)
-                setVerifyLogin(user_.logged)
-                setId(user_.id)
-                setUser(user_.user)
-                setPassword(user_.password)
-                setImage(user_.image)
-                
-                if(verifyLogin){
-                    navigation.navigate("Dashboard", {
-                        id: user_.id,
-                        user: user_.user,
-                        password: user_.password,
-                        image: image,
-                    })
-                }
-            } else {
-                setVerifyLogin(false)
-            }
-        })
+        // AsyncStorage.getItem('user_storage').then(user_storage => {
+        //     if (user_storage) {
+        //         const user_: UserLogged = JSON.parse(user_storage)
+        //         setVerifyLogin(user_.logged)
+        //         setId(user_.id)
+        //         setUser(user_.user)
+        //         setPassword(user_.password)
+        //         setImage(user_.image)
+
+        //         if(verifyLogin){
+        //             navigation.navigate("Dashboard", {
+        //                 id: user_.id,
+        //                 user: user_.user,
+        //                 password: user_.password,
+        //                 image: image,
+        //             })
+        //         }
+        //     } else {
+        //         setVerifyLogin(false)
+        //     }
+        // })
     })
 
     // if (!verifyLogin){

@@ -6,6 +6,25 @@ import * as Yup from 'yup'
 
 export default {
 
+    async show(request: Request, response: Response){
+        const { user, password } = request.body
+        const contactRepository = getRepository(Contact)
+
+        const contact = await contactRepository
+            .createQueryBuilder("user")
+            .where("user.user = :user", {user})
+            .andWhere("user.password = :password", {password})
+            .select(["user.id", "user.user", "user.password", "user.image"])
+            .execute()
+            
+        return response.json({
+            id: contact[0].user_id,
+            user: contact[0].user_user,
+            password: contact[0].user_password,
+            image: contact[0].user_image
+        })
+    },
+
     async index(request: Request, response: Response){
         const contactRepository = getRepository(Contact)
 
@@ -30,7 +49,6 @@ export default {
             res: contact.length > 0,
             id: date + user
         })
-        // return response.json(contactView.renderMany(contact))
     },
 
     async create(request: Request, response: Response) {

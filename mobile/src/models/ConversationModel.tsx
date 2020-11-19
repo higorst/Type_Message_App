@@ -1,14 +1,14 @@
 export class Conversation {
 
-    constructor(id?: string, contact_id?: string, contact_avatar?: string, user_id_conversation?: string) {
+    constructor(id?: string, id_contact?: string, image_contact?: string, user_id_conversation?: string) {
         this.id = id;
-        this.contact_id = contact_id;
-        this.contact_avatar = contact_avatar;
+        this.id_contact = id_contact;
+        this.image_contact = image_contact;
         this.user_id_conversation = user_id_conversation;
     }
 
     public id?: string;
-    public contact_id?: string;
-    public contact_avatar?: string;
+    public id_contact?: string;
+    public image_contact?: string;
     public user_id_conversation?: string;
 }

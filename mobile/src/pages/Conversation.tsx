@@ -10,6 +10,8 @@ import ConversationStyles from '../styles/ConversationStyles'
 import { ScrollView } from 'react-native-gesture-handler';
 import { Feather } from '@expo/vector-icons';
 import { Color } from '../styles/Color';
+import ConversationController from '../controller/ConversationController';
+import { Conversation as ConversationModel } from '../models/ConversationModel';
 
 interface Message {
     id: string;
@@ -55,6 +57,7 @@ export default function Conversation(props: ContactProps) {
     }
 
     function handleDeleteConversation(){
+        ConversationController.deleteById(id_contact)
         Keyboard.dismiss()
         navigation.goBack()
     }
@@ -64,39 +67,52 @@ export default function Conversation(props: ContactProps) {
     }
 
     useEffect(() => {
+        // verificar se existe conversa cadastrada. Se não houver -> cadastrar
+        ConversationController.findById(id_contact).then( (response: any) => {
+            if (response.length === 0){
+                // add conversation
+                const user_id_conversation = id
+                ConversationController.add( new ConversationModel(
+                    id,
+                    id_contact,
+                    image_contact,
+                    user_id_conversation,
+                ))
+            }
+            setMessages([
+              {
+                  id: '1',
+                  message: 'Hi, how are you doing?',
+                  sender: false,
+                  time: '18:45',
+              },
+              {
+                  id: '2',
+                  message: 'Hi, i\'m fine and you?',
+                  sender: true,
+                  time: '18:45',
+              },
+              {
+                  id: '3',
+                  message: 'Im fine too.\n I love to type on this app!',
+                  sender: false,
+                  time: '18:45',
+              },
+              {
+                  id: '4',
+                  message: 'So do I\n\nGod bless you.',
+                  sender: true,
+                  time: '18:45',
+              },
+              {
+                  id: '5',
+                  message: 'Good bye my friend!',
+                  sender: false,
+                  time: '18:45',
+              },
+            ])
+        })
       // implementar método de pegar mensagens com determinado usuário (id)
-      setMessages([
-        {
-            id: '1',
-            message: 'Hi, how are you doing?',
-            sender: false,
-            time: '18:45',
-        },
-        {
-            id: '2',
-            message: 'Hi, i\'m fine and you?',
-            sender: true,
-            time: '18:45',
-        },
-        {
-            id: '3',
-            message: 'Im fine too.\n I love to type on this app!',
-            sender: false,
-            time: '18:45',
-        },
-        {
-            id: '4',
-            message: 'So do I\n\nGod bless you.',
-            sender: true,
-            time: '18:45',
-        },
-        {
-            id: '5',
-            message: 'Good bye my friend!',
-            sender: false,
-            time: '18:45',
-        },
-      ])
     }, [])
 
     return(
