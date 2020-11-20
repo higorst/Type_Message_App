@@ -17,15 +17,19 @@ interface ConversationProps {
 export default function Conversation(props: ConversationProps) {
     const [last_msg, setLastMsg] = useState('')
     const [time, setTime] = useState('')
+    const [sender, setSender] = useState('')
 
     useEffect(() => {
-        MessageController.lastMessage(props.id).then( (res: any) => {
+        MessageController.lastMessage(props.id).then((res: any) => {
             // last_message = res.messsage
-            res._array.map( (msg: any) => {
+            res._array.map((msg: any) => {
                 // console.log(msg.message)
                 setLastMsg(msg.message)
                 setTime(msg.time)
-            } )
+                setSender(
+                    msg.sender === 0 ? "Você:" : props.user + ":"
+                )
+            })
         })
     })
 
@@ -43,6 +47,7 @@ export default function Conversation(props: ConversationProps) {
                     <Text style={styles.time}>{time}</Text>
                 </View>
                 <View style={styles.box_2_row_2}>
+                    <Text style={styles.sender}>{sender}</Text>
                     <Text style={styles.message}>{last_msg}</Text>
                 </View>
             </View>

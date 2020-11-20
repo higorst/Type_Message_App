@@ -42,7 +42,7 @@ export default class MessageController {
 
     static lastMessage(id: number) {
         return new Promise((resolve, reject) => db.transaction(tx => {
-            tx.executeSql(`select message, time from ${table} where conversation_id=? ORDER BY message DESC LIMIT 1`, [id], (_, { rows }) => {
+            tx.executeSql(`select message, time, sender from ${table} where conversation_id=? ORDER BY message DESC LIMIT 1`, [id], (_, { rows }) => {
                 resolve(rows)
             }), (sqlError: any) => {
                 console.log(sqlError);

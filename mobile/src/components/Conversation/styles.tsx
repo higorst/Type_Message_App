@@ -27,13 +27,14 @@ const styles = StyleSheet.create({
     box_2: {
         height: avatarLenght * 1,
         width: Dimensions.get('screen').width * 0.75 - 10,
-        backgroundColor: Color.secondary,
+        backgroundColor: Color.green,
 
         justifyContent: 'center',
         alignItems: 'flex-start',
         flexDirection: 'column',
 
         paddingLeft: 15,
+        // paddingRight: 25,
         borderRadius: 20,
         left: Dimensions.get('screen').width * 0.25,
     },
@@ -61,7 +62,8 @@ const styles = StyleSheet.create({
 
         marginRight: 10,
 
-        justifyContent: 'center',
+        flexDirection: 'row',
+        justifyContent: 'flex-start',
         alignItems: 'center',
     },
 
@@ -99,72 +101,18 @@ const styles = StyleSheet.create({
         fontFamily: 'Nunito_600SemiBold',
         // textAlign: 'center',
         fontSize: 16,
-        color: Color.primary,
+        color: Color.white,
         maxWidth: Dimensions.get('window').width - avatarLenght * 1.63,
         maxHeight: 50,
     },
-
-
-
-
-
-
-
-
-
-
-
-    // avatar_box: {
-    //     height: 64,
-    //     width: 64,
-    //     borderRadius: 100,
-    //     left: 10,
-    //     elevation: 4,
-    // },
-    // avatar: {
-    //     height: 64,
-    //     width: 64,
-    //     borderRadius: 100,
-    //     position: 'relative',
-
-    //     borderWidth: 1,
-    //     borderColor: Color.conversation,
-    // },
-    
-    // context: {
-    //     flexDirection: 'column',
-    //     width: Dimensions.get('window').width * 0.77,
-
-    //     padding: 5,
-    //     paddingLeft: 20,
-
-    //     backgroundColor: Color.conversation,
-    //     borderRadius: 20,
-    //     marginRight: Dimensions.get('window').width * 0.03,
-    //     elevation: 3,
-    // },
-    // up: {
-    //     flexDirection: 'row',
-    //     justifyContent: 'space-between',
-    //     // padding: 5,
-    //     paddingTop: 3,
-    //     paddingRight: 3,
-    // },
-    // down: {
-    //     flexDirection: 'row',
-    //     justifyContent: 'space-between',
-    //     // padding: 5,
-    //     paddingTop: 3,
-    //     paddingRight: 3,
-    //     paddingBottom: 5,
-    // },
-
-    // user_name: {
-    //     fontFamily: 'Nunito_400Regular_Italic',
-    //     fontStyle: 'italic',
-    //     fontSize: 14,
-    //     color: Color.white,
-    // },
+    sender: {
+        fontFamily: 'Nunito_600SemiBold',
+        fontSize: 12,
+        color: Color.primary,
+        marginRight: 5,
+        maxWidth: Dimensions.get('window').width - avatarLenght * 1.63,
+        maxHeight: 50,
+    },
 })
 
 export default styles
