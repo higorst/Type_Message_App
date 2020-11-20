@@ -56,12 +56,6 @@ function Conversation(props: ContactProps) {
             return
         }
         let current_time = new Date()
-        // setMessages([...messages, {
-        //     id: '1' + current_time,
-        //     message: lastMessage,
-        //     sender: 1,
-        //     time: current_time.getHours() + ':' + current_time.getMinutes(),
-        // },])
         await api.post('messages/send', {
             id: params.id,
             user: params.user,
@@ -77,7 +71,7 @@ function Conversation(props: ContactProps) {
             1,
             current_time.getHours().toString() + ":" + current_time.getMinutes().toString(),
             params.id,
-            idConversation
+            params.id_conversation
         )).then((insertId: any) => {
             console.log("add sended message")
             // adicionar a lista de mensagens

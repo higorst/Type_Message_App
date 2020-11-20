@@ -15,7 +15,7 @@ export default class MessageController {
                     values (?, ?, ?, ?, ?, ?)`,
                     [param.message, param.sender, param.time, param.user_id, param.conversation_id, param.time],
                     (_, { insertId, rows }) => {
-                        console.log("id message insert: " + insertId);
+                        console.log("id message " + param.message + " insert: " + insertId);
                         resolve(insertId)
                     }), (sqlError: any) => {
                         console.log(sqlError);
@@ -42,7 +42,7 @@ export default class MessageController {
 
     static lastMessage(id: number) {
         return new Promise((resolve, reject) => db.transaction(tx => {
-            tx.executeSql(`select message, time, sender from ${table} where conversation_id=? ORDER BY message DESC LIMIT 1`, [id], (_, { rows }) => {
+            tx.executeSql(`select id, message, time, sender from ${table} where conversation_id=? ORDER BY id DESC LIMIT 1`, [id], (_, { rows }) => {
                 resolve(rows)
             }), (sqlError: any) => {
                 console.log(sqlError);
