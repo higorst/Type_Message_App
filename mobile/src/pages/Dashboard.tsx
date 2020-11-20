@@ -23,6 +23,9 @@ import { Conversation as ConversationModel } from '../models/ConversationModel';
 import { Message as MessageModel } from '../models/MessageModel';
 import MessageController from '../controller/MessageController';
 
+import { connect } from 'react-redux';
+import { newMessageRedux } from '../redux/Actions'
+
 interface ConversationInterface {
     id: number;
     id_contact: string;
@@ -61,12 +64,11 @@ interface NewMessage {
     time: string;
 }
 
-
-export default function Dahsboard() {
+function Dashboard(props: any) {
 
     const navigation = useNavigation()
 
-    const [conversations, setConversations] = useState<any[]>([])
+    const [conversations, setConversations] = useState<ConversationInterface[]>([])
     const [devices_connect, setDevicesConnect] = useState(0)
     const [updateCards, setUpdateCards] = useState('')
 
@@ -96,8 +98,6 @@ export default function Dahsboard() {
         handleNewMessage(data)
     })
 
-
-
     async function handleNewMessage(data: any) {
         // verificar se existe conversa 
         await ConversationController.findByUser(data.user_contact).then(async (response: any) => {
@@ -109,29 +109,62 @@ export default function Dahsboard() {
                     data.user_contact,
                     data.image_contact,
                     params.id,
-                ))
-            }
-            await response._array.map(async (res: any) => {
-                // save message
-                console.log("add message received")
-                // console.log(data)
-                await MessageController.add(new MessageModel(
-                    0,
-                    data.message,
-                    false,
-                    data.time,
-                    params.id,
-                    res.id
-                ))
-            })
-            if (!(response.length > 0)) {
-                handleLoadConversations()
+                )).then(async (insertId: any) => {
+                    console.log("conversa criada")
+
+                    // save message
+                    console.log("add message received")
+                    // console.log(data)
+                    await MessageController.add(new MessageModel(
+                        0,
+                        data.message,
+                        0,
+                        data.time,
+                        params.id,
+                        insertId
+                    )).then((insertId_message: any) => {
+                        // send to conversation with redux
+                        props.newMessageRedux({
+                            id: insertId_message,
+                            message: data.message,
+                            sender: 0,
+                            user_id: params.id,
+                            time: data.time,
+                            conversation_id: insertId,
+                        })
+                    })
+
+                })
             } else {
-                setUpdateCards(data.message)
+                await response._array.map(async (res: any) => {
+                    // save message
+                    console.log("add message received")
+                    // console.log(data)
+                    await MessageController.add(new MessageModel(
+                        0,
+                        data.message,
+                        0,
+                        data.time,
+                        params.id,
+                        res.id
+                    )).then((insertId: any) => {
+                        // send to conversation with redux
+                        props.newMessageRedux({
+                            id: insertId,
+                            message: data.message,
+                            sender: 0,
+                            user_id: params.id,
+                            time: data.time,
+                            conversation_id: res.id,
+                        })
+                    })
+                })
             }
+            // if (!(response.length > 0)) {
+            handleLoadConversations()
+            // }
         })
     }
-
 
     const [popup, setPopup] = useState({ visible: false, message: '' })
     function handlePopup(message: string) {
@@ -168,12 +201,13 @@ export default function Dahsboard() {
     function handleLoadConversations() {
         ConversationController.findAll(params.id)
             .then((response: any) => {
-                setConversations(response._array)   
+                setConversations(response._array)
             })
     }
 
     useEffect(() => {
         handleLoadConversations()
+        setUpdateCards((new Date()).toString())
     }, [params.view])
 
     return (
@@ -201,12 +235,12 @@ export default function Dahsboard() {
             />
 
             <ScrollView style={DashboardStyles.scrollview}>
-                {conversations.map(conversation => {
+                {conversations.map((conversation, index) => {
                     return (
                         <Conversation
+                            key={index}
                             onPress={() => handleGoToConversation(conversation)}
                             image={conversation.image_contact}
-                            key={conversation.id}
                             id={conversation.id}
                             user={conversation.user_contact}
                             n_lidas={0}
@@ -224,3 +258,12 @@ export default function Dahsboard() {
         </View>
     )
 }
+
+const mapStateToProps = (state: any) => ({
+    message: state.dataAll.message
+})
+
+export default connect(
+    mapStateToProps,
+    { newMessageRedux },
+)(Dashboard)

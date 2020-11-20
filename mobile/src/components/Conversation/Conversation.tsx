@@ -28,7 +28,7 @@ export default function Conversation(props: ConversationProps) {
                 setLastMsg(msg.message)
                 setTime(msg.time)
                 setSender(
-                    msg.sender === 0 ? "Você:" : props.user + ":"
+                    msg.sender === 1 ? "Você:" : props.user + ":"
                 )
             })
         })

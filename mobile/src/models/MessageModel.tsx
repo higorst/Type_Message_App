@@ -1,6 +1,6 @@
 export class Message {
 
-    constructor(id?: number, message?: string, sender?: boolean, time?: string, user_id?: string, conversation_id?: number) {
+    constructor(id?: number, message?: string, sender?: number, time?: string, user_id?: string, conversation_id?: number) {
         this.id = id;
         this.message = message;
         this.sender = sender;
@@ -11,7 +11,7 @@ export class Message {
 
     public id?: number;
     public message?: string;
-    public sender?: boolean;
+    public sender?: number;
     public time?: string;
     public user_id?: string;
     public conversation_id?: number;

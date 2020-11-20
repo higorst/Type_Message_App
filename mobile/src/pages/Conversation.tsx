@@ -16,11 +16,15 @@ import api from '../services/api';
 import MessageController from '../controller/MessageController';
 import { Message as MessageModel } from '../models/MessageModel';
 
+import { connect } from 'react-redux';
+
 interface MessageInterface {
     id: string;
     message: string;
-    sender: boolean;
+    sender: number;
+    user_id: string;
     time: string;
+    conversation_id: number;
 }
 
 interface ContactProps {
@@ -32,9 +36,10 @@ interface ContactProps {
     user_contact: string;
     image_contact: string;
     id_conversation: number;
+    message_redux: MessageInterface;
 }
 
-export default function Conversation(props: ContactProps) {
+function Conversation(props: ContactProps) {
 
     const navigation = useNavigation()
 
@@ -47,51 +52,62 @@ export default function Conversation(props: ContactProps) {
     const params = routes.params as ContactProps
 
     async function handleSendMessage() {
-        if (lastMessage === ''){
+        if (lastMessage === '') {
             return
         }
         let current_time = new Date()
-        setMessages([...messages, {
-            id: '1' + current_time,
-            message: lastMessage,
-            sender: true,
-            time: current_time.getHours() + ':' + current_time.getMinutes(),
-        },])
-        await api.post('messages/send', { 
-            id: params.id, 
-            user: params.user, 
-            image: params.image, 
-            contact_id: params.id_contact, 
-            contact: params.user_contact, 
+        // setMessages([...messages, {
+        //     id: '1' + current_time,
+        //     message: lastMessage,
+        //     sender: 1,
+        //     time: current_time.getHours() + ':' + current_time.getMinutes(),
+        // },])
+        await api.post('messages/send', {
+            id: params.id,
+            user: params.user,
+            image: params.image,
+            contact_id: params.id_contact,
+            contact: params.user_contact,
             message: lastMessage
         })
         // save message
-        console.log("add sended message")
-        MessageController.add(new MessageModel(
+        await MessageController.add(new MessageModel(
             0,
             lastMessage,
-            true,
+            1,
             current_time.getHours().toString() + ":" + current_time.getMinutes().toString(),
-            params.id,    
-            idConversation                    
-        ))
+            params.id,
+            idConversation
+        )).then((insertId: any) => {
+            console.log("add sended message")
+            // adicionar a lista de mensagens
+            setMessages([...messages, {
+                id: insertId,
+                message: lastMessage,
+                sender: 1,
+                user_id: params.id,
+                time: current_time.getHours().toString() + ':' + current_time.getMinutes().toString(),
+                conversation_id: props.id_conversation,
+            },])
+        })
         setLastMessage('')
-        scroll?.scrollTo({x: 0, y: 0, animated: true});
+        scroll?.scrollTo({ x: 0, y: 0, animated: true });
     }
 
-    function handleDeleteConversation(){
-        ConversationController.deleteById(params.id_contact)
-        Keyboard.dismiss()
-        navigation.navigate('Dashboard', {
-            id: params.id,
-            user: params.user,
-            password: params.password,
-            image: params.image,
-            view: 'delete_conversation'
+    async function handleDeleteConversation() {
+        await ConversationController.deleteById(params.id_conversation).then( response => {
+            Keyboard.dismiss()
+            navigation.navigate('Dashboard', {
+                id: params.id,
+                user: params.user,
+                password: params.password,
+                image: params.image,
+                view: 'delete_conversation' + String(params.id_conversation)
+            })
         })
     }
 
-    function handleToDashboard(){
+    function handleToDashboard() {
         Keyboard.dismiss()
         navigation.navigate('Dashboard', {
             id: params.id,
@@ -102,8 +118,8 @@ export default function Conversation(props: ContactProps) {
         })
     }
 
-    function handleScroll(x: number, y:number){
-        scroll?.scrollTo({y: y, animated: true});
+    function handleScroll(x: number, y: number) {
+        scroll?.scrollTo({ y: y, animated: true });
     }
 
     useEffect(() => {
@@ -124,23 +140,23 @@ export default function Conversation(props: ContactProps) {
                 // console.log(idConversation)
                 setMessages(response._array)
             })
-        // para quando selecionar um novo contato
-        } else {            
+            // para quando selecionar um novo contato
+        } else {
             // verificar se existe conversa cadastrada. Se não houver -> cadastrar
-            ConversationController.findByUser(params.user_contact).then( async (response: any) => {
-                if (response.length === 0){
+            ConversationController.findByUser(params.user_contact).then(async (response: any) => {
+                if (response.length === 0) {
                     // add conversation
                     const user_id = params.id
-                    await ConversationController.add( new ConversationModel(
+                    await ConversationController.add(new ConversationModel(
                         params.id,
                         params.id_contact,
                         params.user_contact,
                         params.image_contact,
                         user_id,
-                    )).then( (id: any) => {
+                    )).then((id: any) => {
                         setIdConversation(id)
                     })
-                }else {
+                } else {
                     response._array.map((data: any) => {
                         // console.log(data.id)
                         setIdConversation(data.id)
@@ -156,53 +172,66 @@ export default function Conversation(props: ContactProps) {
             })
         }
 
-      // implementar método de pegar mensagens com determinado usuário (id)
+        // implementar método de pegar mensagens com determinado usuário (id)
     }, [])
 
     useEffect(() => {
-        scroll?.scrollTo({x: 0, y: 0, animated: true});
-        console.log("update messages")
+        scroll?.scrollTo({ x: 0, y: 0, animated: true });
     }, [lastMessage])
 
-    return(
+    useEffect(() => {
+        scroll?.scrollTo({ x: 0, y: 0, animated: true });
+        setMessages([...messages, props.message_redux])
+    }, [props.message_redux])
+
+    return (
         <KeyboardAvoidingView style={ConversationStyles.container}>
-            <Header 
-                user_name={params.user_contact} 
-                avatar={params.image_contact} 
-                onPressDelete={handleDeleteConversation} 
-                onPressback={handleToDashboard} delete back 
+            <Header
+                user_name={params.user_contact}
+                avatar={params.image_contact}
+                onPressDelete={handleDeleteConversation}
+                onPressback={handleToDashboard} delete back
             />
 
-            <ScrollView 
+            <ScrollView
                 ref={ref => setScroll(ref ? ref : scroll)}
                 onContentSizeChange={(x, y) => handleScroll(x, y)}
-                
+
             >
-                { messages.map( message => {
-                    return(
-                        <Message 
-                            key={message.id}
-                            sender={message.sender} 
+                {messages.map((message, index) => {
+                    return (
+                        <Message
+                            key={index}
+                            sender={message.sender}
                             contact={message.sender ? "Você" : params.user_contact}
                             message={message.message}
                             time={message.time}
                         />
                     )
-                }) }
+                })}
             </ScrollView>
 
             <View style={ConversationStyles.input_group}>
-                <TextInput 
+                <TextInput
                     style={ConversationStyles.input}
                     value={lastMessage}
                     multiline
-                    onChangeText={setLastMessage} 
+                    onChangeText={setLastMessage}
                 />
                 <TouchableOpacity onPress={handleSendMessage} style={ConversationStyles.button_sender}>
-                    <Feather name="send" size={24} color={Color.primary}/>
+                    <Feather name="send" size={24} color={Color.primary} />
                 </TouchableOpacity>
             </View>
 
         </KeyboardAvoidingView>
     )
 }
+
+const mapStateToProps = (state: any) => ({
+    message_redux: state.dataAll.message
+})
+
+
+export default connect(
+    mapStateToProps,
+)(Conversation)

@@ -25,22 +25,28 @@ export default class ConversationController {
             }));
     }
 
-    static deleteById(id: string) {
-        db.transaction(
+    static deleteById(id: number) {
+        return new Promise((resolve, reject) => db.transaction(
             tx => {
-                tx.executeSql(`delete from ${table} where id_contact = ?;`, [id], (_, { rows }) => {
+                tx.executeSql(
+                    `begin;
+                     delete from ${table} where id = '${id}'; 
+                     delete from messages where conversation_id = '${id}';
+                     commit;`
+                    , [], (_, { rows }) => {
+                        resolve(true)
                 }), (sqlError: any) => {
                     console.log(sqlError);
                 }
             }, (txError) => {
                 console.log(txError);
 
-            });
+            }))
     }
 
     static findByUser(user_contact: string) {
         return new Promise((resolve, reject) => db.transaction(tx => {
-            tx.executeSql(`select id from ${table} where user_contact=?`, [user_contact], (_, { rows }) => {
+            tx.executeSql(`select id from ${table} where user_contact=?`, [user_contact], (id, { rows }) => {
                 resolve(rows)
             }), (sqlError: any) => {
                 console.log(sqlError);

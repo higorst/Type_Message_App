@@ -1,0 +1,1 @@
+export const new_message = 'NEW_MESSAGE'
