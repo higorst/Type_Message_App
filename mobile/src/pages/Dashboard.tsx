@@ -68,7 +68,7 @@ export default function Dahsboard() {
 
     const [conversations, setConversations] = useState<any[]>([])
     const [devices_connect, setDevicesConnect] = useState(0)
-    const [loadConversations, setLoadConversations] = useState(false)
+    const [updateCards, setUpdateCards] = useState('')
 
     // carregar dados de usuário logado
     const route = useRoute()
@@ -102,6 +102,7 @@ export default function Dahsboard() {
         // verificar se existe conversa 
         await ConversationController.findByUser(data.user_contact).then(async (response: any) => {
             if (!(response.length > 0)) {
+                console.log("criando nova conversa")
                 await ConversationController.add(new ConversationModel(
                     params.id,
                     data.id_contact,
@@ -125,6 +126,8 @@ export default function Dahsboard() {
             })
             if (!(response.length > 0)) {
                 handleLoadConversations()
+            } else {
+                setUpdateCards(data.message)
             }
         })
     }
@@ -163,47 +166,9 @@ export default function Dahsboard() {
     }
 
     function handleLoadConversations() {
-        // MessageController.lastMessage(id).then( (res: any) => {
-        //     // last_message = res.messsage
-        //     console.log(res)
-        // })
         ConversationController.findAll(params.id)
             .then((response: any) => {
-                // console.log(response)
-                // var array_conversations = [] as ConversationInterface[]
-                // response._array.map((cv: any) => {
-                //     // console.log()
-                //     let message = ''
-                //     MessageController.lastMessage(cv.id).then((res: any) => {
-                //         // last_message = res.messsage
-                //         res._array.map((msg: any) => {
-                //             console.log(msg.message)
-                //             message = msg.message
-                //         })
-                //     })
-                //     array_conversations.push({
-                //         id: Number(cv.id),
-                //         id_contact: String(cv.id_contact),
-                //         user_contact: String(cv.user_contact),
-                //         image_contact: String(cv.image_contact),
-                //         user_id: String(cv.user_id),
-                //         last_message: String(message)
-                //     })
-                // })
-                // console.log("conversations")
-                // console.log(conversations)
-                // setConversations(Object.values(response._array))
-                // console.log(Object.values(response._array))
                 setConversations(response._array)   
-
-                // setConversations(array_conversations)
-                // console.log(array_conversations)
-
-                // console.log(response)
-                // response._array.map((r: any) => {
-                //     console.log(r.id)
-                // })
-                // setConversations(response._array)
             })
     }
 
@@ -237,21 +202,6 @@ export default function Dahsboard() {
 
             <ScrollView style={DashboardStyles.scrollview}>
                 {conversations.map(conversation => {
-                    // const { id, id_contact, user_contact, image_contact } = conversation
-                    let last_msg = ''
-                    // await MessageController.lastMessage(id).then( (res: any) => {
-                    //     // last_message = res.messsage
-                    //     console.log(res)
-                    // })
-
-                    // MessageController.lastMessage(conversation.id).then( (res: any) => {
-                    //     // last_message = res.messsage
-                    //     res._array.map( (msg: any) => {
-                    //         console.log(msg.message)
-                    //         last_msg = msg.message
-                    //     } )
-                    // })
-
                     return (
                         <Conversation
                             onPress={() => handleGoToConversation(conversation)}
@@ -259,9 +209,8 @@ export default function Dahsboard() {
                             key={conversation.id}
                             id={conversation.id}
                             user={conversation.user_contact}
-                            // time={'18:45'}
                             n_lidas={0}
-                            // last_message={last_msg}
+                            update_cards={updateCards}
                         />
                     )
                 })}

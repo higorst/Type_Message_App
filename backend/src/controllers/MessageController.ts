@@ -13,6 +13,8 @@ export default {
 
         const user_socket = request.connectedUsers[contact]
         if (user_socket){
+            // enviar mensagem pq usuário está online
+            console.log("--- DESTINÁRIO ENCONTRADO")
             request.io.to(user_socket).emit('message', {
                 // info - who is sending
                 id_contact: id,
@@ -24,6 +26,9 @@ export default {
                 contact: contact,
                 time: time
             })
+        } else {
+            // armazenar no banco pq usuário está offline
+            console.log("--- DESTINÁRIO NÃO ENCONTRADO")
         }
         return response.json({message: "mensagem enviada"})
     },

@@ -12,6 +12,7 @@ interface ConversationProps {
     // time?: string;
     n_lidas?: number;
     // last_message?: string;
+    update_cards: string;
 }
 
 export default function Conversation(props: ConversationProps) {
@@ -31,7 +32,7 @@ export default function Conversation(props: ConversationProps) {
                 )
             })
         })
-    })
+    }, [props.update_cards])
 
     return (
         <TouchableOpacity

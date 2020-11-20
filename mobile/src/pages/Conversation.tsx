@@ -87,7 +87,7 @@ export default function Conversation(props: ContactProps) {
             user: params.user,
             password: params.password,
             image: params.image,
-            view: 'conversation'
+            view: 'delete_conversation'
         })
     }
 
@@ -155,8 +155,14 @@ export default function Conversation(props: ContactProps) {
                 })
             })
         }
+
       // implementar método de pegar mensagens com determinado usuário (id)
     }, [])
+
+    useEffect(() => {
+        scroll?.scrollTo({x: 0, y: 0, animated: true});
+        console.log("update messages")
+    }, [lastMessage])
 
     return(
         <KeyboardAvoidingView style={ConversationStyles.container}>
