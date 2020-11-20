@@ -62,6 +62,7 @@ const styles = StyleSheet.create({
         marginRight: 10,
 
         justifyContent: 'center',
+        alignItems: 'center',
     },
 
     user_name: {
@@ -96,6 +97,7 @@ const styles = StyleSheet.create({
 
     message: {
         fontFamily: 'Nunito_600SemiBold',
+        // textAlign: 'center',
         fontSize: 16,
         color: Color.primary,
         maxWidth: Dimensions.get('window').width - avatarLenght * 1.63,

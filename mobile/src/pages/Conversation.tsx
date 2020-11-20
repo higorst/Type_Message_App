@@ -12,8 +12,11 @@ import { Feather } from '@expo/vector-icons';
 import { Color } from '../styles/Color';
 import ConversationController from '../controller/ConversationController';
 import { Conversation as ConversationModel } from '../models/ConversationModel';
+import api from '../services/api';
+import MessageController from '../controller/MessageController';
+import { Message as MessageModel } from '../models/MessageModel';
 
-interface Message {
+interface MessageInterface {
     id: string;
     message: string;
     sender: boolean;
@@ -23,25 +26,27 @@ interface Message {
 interface ContactProps {
     id: string;
     user: string;
+    password: string;
     image: string;
     id_contact: string;
     user_contact: string;
     image_contact: string;
+    id_conversation: number;
 }
 
 export default function Conversation(props: ContactProps) {
 
     const navigation = useNavigation()
 
-    const [messages, setMessages] = useState<Message[]>([])
+    const [idConversation, setIdConversation] = useState(0)
+    const [messages, setMessages] = useState<MessageInterface[]>([])
     const [lastMessage, setLastMessage] = useState('')
     const [scroll, setScroll] = useState<ScrollView>()
 
     const routes = useRoute()
     const params = routes.params as ContactProps
-    const { id, user, image, id_contact, user_contact, image_contact } = params
 
-    function handleSendMessage() {
+    async function handleSendMessage() {
         if (lastMessage === ''){
             return
         }
@@ -52,14 +57,49 @@ export default function Conversation(props: ContactProps) {
             sender: true,
             time: current_time.getHours() + ':' + current_time.getMinutes(),
         },])
+        await api.post('messages/send', { 
+            id: params.id, 
+            user: params.user, 
+            image: params.image, 
+            contact_id: params.id_contact, 
+            contact: params.user_contact, 
+            message: lastMessage
+        })
+        // save message
+        console.log("add sended message")
+        MessageController.add(new MessageModel(
+            0,
+            lastMessage,
+            true,
+            current_time.getHours().toString() + ":" + current_time.getMinutes().toString(),
+            params.id,    
+            idConversation                    
+        ))
         setLastMessage('')
         scroll?.scrollTo({x: 0, y: 0, animated: true});
     }
 
     function handleDeleteConversation(){
-        ConversationController.deleteById(id_contact)
+        ConversationController.deleteById(params.id_contact)
         Keyboard.dismiss()
-        navigation.goBack()
+        navigation.navigate('Dashboard', {
+            id: params.id,
+            user: params.user,
+            password: params.password,
+            image: params.image,
+            view: 'conversation'
+        })
+    }
+
+    function handleToDashboard(){
+        Keyboard.dismiss()
+        navigation.navigate('Dashboard', {
+            id: params.id,
+            user: params.user,
+            password: params.password,
+            image: params.image,
+            view: 'conversation'
+        })
     }
 
     function handleScroll(x: number, y:number){
@@ -67,57 +107,65 @@ export default function Conversation(props: ContactProps) {
     }
 
     useEffect(() => {
-        // verificar se existe conversa cadastrada. Se não houver -> cadastrar
-        ConversationController.findById(id_contact).then( (response: any) => {
-            if (response.length === 0){
-                // add conversation
-                const user_id_conversation = id
-                ConversationController.add( new ConversationModel(
-                    id,
-                    id_contact,
-                    image_contact,
-                    user_id_conversation,
-                ))
-            }
-            setMessages([
-              {
-                  id: '1',
-                  message: 'Hi, how are you doing?',
-                  sender: false,
-                  time: '18:45',
-              },
-              {
-                  id: '2',
-                  message: 'Hi, i\'m fine and you?',
-                  sender: true,
-                  time: '18:45',
-              },
-              {
-                  id: '3',
-                  message: 'Im fine too.\n I love to type on this app!',
-                  sender: false,
-                  time: '18:45',
-              },
-              {
-                  id: '4',
-                  message: 'So do I\n\nGod bless you.',
-                  sender: true,
-                  time: '18:45',
-              },
-              {
-                  id: '5',
-                  message: 'Good bye my friend!',
-                  sender: false,
-                  time: '18:45',
-              },
-            ])
-        })
+        // setMessages([
+        //   {
+        //       id: '1',
+        //       message: 'Hi, how are you doing?',
+        //       sender: false,
+        //       time: '18:45',
+        //   },
+        // ])
+
+        // para quando vim da dashboard
+        if (params.id_conversation) {
+            MessageController.findById(params.id_conversation).then((response: any) => {
+                // console.log("messages --------")
+                // console.log(response)
+                // console.log(idConversation)
+                setMessages(response._array)
+            })
+        // para quando selecionar um novo contato
+        } else {            
+            // verificar se existe conversa cadastrada. Se não houver -> cadastrar
+            ConversationController.findByUser(params.user_contact).then( async (response: any) => {
+                if (response.length === 0){
+                    // add conversation
+                    const user_id = params.id
+                    await ConversationController.add( new ConversationModel(
+                        params.id,
+                        params.id_contact,
+                        params.user_contact,
+                        params.image_contact,
+                        user_id,
+                    )).then( (id: any) => {
+                        setIdConversation(id)
+                    })
+                }else {
+                    response._array.map((data: any) => {
+                        // console.log(data.id)
+                        setIdConversation(data.id)
+                    })
+                }
+                // get messages
+                MessageController.findById(idConversation).then((response: any) => {
+                    // console.log("messages --------")
+                    // console.log(response)
+                    console.log(idConversation)
+                    setMessages(response._array)
+                })
+            })
+        }
       // implementar método de pegar mensagens com determinado usuário (id)
     }, [])
 
     return(
         <KeyboardAvoidingView style={ConversationStyles.container}>
-            <Header user_name={user_contact} avatar={image_contact} onPressDelete={handleDeleteConversation} delete back />
+            <Header 
+                user_name={params.user_contact} 
+                avatar={params.image_contact} 
+                onPressDelete={handleDeleteConversation} 
+                onPressback={handleToDashboard} delete back 
+            />
 
             <ScrollView 
                 ref={ref => setScroll(ref ? ref : scroll)}
@@ -129,7 +177,7 @@ export default function Conversation(props: ContactProps) {
                         <Message 
                             key={message.id}
                             sender={message.sender} 
-                            contact={message.sender ? "Você" : user_contact}
+                            contact={message.sender ? "Você" : params.user_contact}
                             message={message.message}
                             time={message.time}
                         />

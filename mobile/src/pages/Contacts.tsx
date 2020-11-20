@@ -37,7 +37,6 @@ export default function Contacts() {
     // carregar dados de usuário logado
     const route = useRoute()
     const params = route.params as UserLogged
-    const { id, user, password, image } = params
 
     const [popup, setPopup] = useState({ visible: false, message: '' })
     function handlePopup(message: string) {
@@ -49,19 +48,20 @@ export default function Contacts() {
             id_contact: contact.id,
             user_contact: contact.user,
             image_contact: contact.image,
-            id: id,
-            user: user,
-            password: password,
-            image: image
+            id: params.id,
+            user: params.user,
+            password: params.password,
+            image: params.image
         })
     }
 
     function handleDashboard() {
         navigation.navigate("Dashboard", {
-            id: id,
-            user: user,
-            password: password,
-            image: image,
+            id: params.id,
+            user: params.user,
+            password: params.password,
+            image: params.image,
+            view: 'contacts'
         })
     }
 
@@ -74,7 +74,7 @@ export default function Contacts() {
 
     const renderItem = (contact: ListRenderItem<Contact>, index: ListRenderItem<number>) => {
         let item = contact.item
-        if (item.user === user){
+        if (item.user === params.user){
             return <View />
         }
         return (
@@ -98,7 +98,7 @@ export default function Contacts() {
                 </View>
             </Modal>
 
-            <Header user_name={`Olá ${user}\ntoque para iniciar uma nova conversa`} avatar={image} back />
+            <Header user_name={`Olá ${params.user}\ntoque para iniciar uma nova conversa`} avatar={params.image} back onPressback={handleDashboard}/>
 
             <SafeAreaView style={{
                 flex: 1,

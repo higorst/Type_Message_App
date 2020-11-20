@@ -5,6 +5,28 @@ import messageView from '../views/messsage_view'
 import * as Yup from 'yup'
 
 export default {
+    
+    async send(request: any, response: Response){
+        const date = new Date()
+        const time = date.getHours().toString() + ":" + date.getMinutes().toString()
+        const { id, user, image, contact_id, contact, message } = request.body
+
+        const user_socket = request.connectedUsers[contact]
+        if (user_socket){
+            request.io.to(user_socket).emit('message', {
+                // info - who is sending
+                id_contact: id,
+                user_contact: user,
+                image_contact: image,
+                // info - who is receiving
+                id: contact_id,
+                message: message,
+                contact: contact,
+                time: time
+            })
+        }
+        return response.json({message: "mensagem enviada"})
+    },
 
     async getMessagesFromUser(request: Request, response: Response){
         const { id } = request.params

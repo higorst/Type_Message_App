@@ -16,13 +16,21 @@ export default {
             .andWhere("user.password = :password", {password})
             .select(["user.id", "user.user", "user.password", "user.image"])
             .execute()
-            
-        return response.json({
-            id: contact[0].user_id,
-            user: contact[0].user_user,
-            password: contact[0].user_password,
-            image: contact[0].user_image
-        })
+        if (contact[0].user_id.length > 0){
+            return response.json({
+                id: contact[0].user_id,
+                user: contact[0].user_user,
+                password: contact[0].user_password,
+                image: contact[0].user_image
+            })
+        } else {
+            return response.json({
+                id: '',
+                user: '',
+                password: '',
+                image: ''
+            })
+        }
     },
 
     async index(request: Request, response: Response){
@@ -59,8 +67,6 @@ export default {
             image,
         } = request.body
 
-        console.log(user)
-    
         const contactRepository = getRepository(Contact)
 
         const data = {
@@ -84,7 +90,6 @@ export default {
         const contact = contactRepository.create(data)
     
         await contactRepository.save(contact)
-        console.log("user created!")
         return response.status(201).json(contact)
     }
 }

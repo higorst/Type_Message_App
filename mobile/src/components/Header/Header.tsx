@@ -17,6 +17,8 @@ interface HeaderProps {
 
     onPressDelete?: any;
     onPressConfiguration?: any;
+    onPressback?: any;
+    onContacts?: any;
 }
 
 export default function Header(props: HeaderProps) {
@@ -30,7 +32,7 @@ export default function Header(props: HeaderProps) {
     return (
         <View style={styles.container}>
             { props.back ? (
-                <BorderlessButton onPress={navigation.goBack} >
+                <BorderlessButton onPress={props.onPressback} >
                     <Feather name="arrow-left" size={24} color={Color.secondary} />
                 </BorderlessButton>
             ) : null}
@@ -42,7 +44,7 @@ export default function Header(props: HeaderProps) {
             ) : null}
 
             { props.devices_on ? (
-                <BorderlessButton style={styles.online}>
+                <BorderlessButton style={styles.online} onPress={props.onContacts}>
                     <Feather name="cast" size={20} color={Color.green} />
                     <Text style={styles.devices_online}>{props.devices_on} online</Text>
                 </BorderlessButton>

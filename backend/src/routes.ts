@@ -1,12 +1,16 @@
 import { request, Router } from 'express'
 import ContactController from './controllers/ContactController'
+import MessageController from './controllers/MessageController'
 
 const routes = Router()
 
-// ContactController
+// Contact Controller
+routes.get('/users', ContactController.index)
 routes.post('/users/login', ContactController.show)
 routes.post('/users/create', ContactController.create)
-routes.get('/users', ContactController.index)
 routes.post('/users/verify', ContactController.verify)
+
+// Message Controller
+routes.post('/messages/send', MessageController.send)
 
 export default routes

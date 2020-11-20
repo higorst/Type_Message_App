@@ -11,6 +11,7 @@ import Dashboard from './pages/Dashboard'
 import Conversation from './pages/Conversation'
 import Contacts from './pages/Contacts'
 import Info from './pages/Info'
+import { Color } from './styles/Color';
 
 export default function Routes() {
     return(
@@ -18,7 +19,7 @@ export default function Routes() {
             <Navigator screenOptions={{
                 headerShown: false,
                 cardStyle: {
-                    backgroundColor: '#ffffff'
+                    backgroundColor: Color.backgroundHeader,
                 }
             }}>
                 <Screen name="Login" component={Login}/>

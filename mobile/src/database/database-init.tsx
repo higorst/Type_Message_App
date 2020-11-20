@@ -10,11 +10,14 @@ export default class DatabaseInit {
         );
         this.InitDb()
     }
+    // `DROP TABLE IF EXISTS users;`,
+    // `DROP TABLE IF EXISTS conversations;`,
+    // `DROP TABLE IF EXISTS messages;`,
+        // foreign key (user_id) references users (id),
+        // foreign key (conversation_id) references conversations (id)
+        // foreign key (user_id) references users (id)
     private InitDb() {
         var sql = [
-            // `DROP TABLE IF EXISTS users;`,
-            // `DROP TABLE IF EXISTS conversations;`,
-            // `DROP TABLE IF EXISTS messages;`,
 
             `create table if not exists users (
                 id text primary key,
@@ -26,19 +29,18 @@ export default class DatabaseInit {
             `create table if not exists conversations (
                 id integer primary key autoincrement,
                 id_contact text,
+                user_contact text,
                 image_contact text,
-                user_id_conversation text,
-                foreign key (user_id_conversation) references users (id)
+                user_id text
             );`,
-
+                
             `create table if not exists messages (
                 id integer primary key autoincrement,
                 message text,
                 sender integer,
                 user_id text,
-                conversation_id integer,
-                foreign key (user_id) references users (id),
-                foreign key (conversation_id) references conversations (id)
+                time text,
+                conversation_id integer
             );`,
         ];
         // sender => 1: true -/- 0: false

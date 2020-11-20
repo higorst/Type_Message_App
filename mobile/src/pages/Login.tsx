@@ -3,7 +3,8 @@ import { Image, KeyboardAvoidingView, Text, View, Keyboard } from 'react-native'
 import * as ImagePicker from 'expo-image-picker'
 import Modal from 'react-native-modal'
 
-import AsyncStorage from '@react-native-async-storage/async-storage';
+// import socketio from 'socket.io-client'
+// import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import LoginStyles from '../styles/LoginStyles'
 
@@ -103,58 +104,40 @@ export default function Login() {
         await UserController.handleLogin(user, password).then(async (res: any) => {
             if (res.length > 0) {
                 // aprovado para login
-                console.log(res.length)
                 await res._array.map((item: any) => {
                     setId(item.id)
                     setImage(item.image)
                 })
-
-                const user_storage = JSON.stringify({
-                    id: id,
-                    user: user,
-                    password: password,
-                    image: image,
-                    logged: true,
-                })
-                await AsyncStorage.setItem('user_storage', user_storage)
                 // navigate to dashboard
                 navigation.navigate("Dashboard", {
                     id: id,
                     user: user,
                     password: password,
                     image: image,
+                    view: 'login'
                 })
 
             } else {
-                api.post('/users/login', {
+                await api.post('/users/login', {
                     user: user,
                     password: password
                 }).then((response: any) => {
-                    
-                    let { id, user, password, image } = response.data
-                    if (!id) {
+
+                    if (response.data.id === '') {
                         handlePopup("Dados não conferem!")
                     } else {
-                        const user_storage = JSON.stringify({
-                            id: id,
-                            user: user,
-                            password: password,
-                            image: image,
-                            logged: true,
-                        })
-                        AsyncStorage.setItem('user_storage', user_storage)
-                        // navigate to dashboard
+
                         navigation.navigate("Dashboard", {
-                            id: id,
-                            user: user,
-                            password: password,
-                            image: image,
+                            id: response.data.id,
+                            user: response.data.user,
+                            password: response.data.password,
+                            image: response.data.image,
+                            view: 'login'
                         })
                     }
                 })
             }
         })
-
     }
 
     useEffect(() => {

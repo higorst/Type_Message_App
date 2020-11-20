@@ -22,12 +22,13 @@ app.use((req: any, res, next) => {
 io.on('connection', (socket: any) => {
     const { user_id } = socket.handshake.query
     connectedUsers[user_id] = socket.id
-    
-    var len = 0
+
+    let len = 0
     for (var user in connectedUsers){
         len++
     }
-    socket.broadcast.emit('toAll-devices-connect', { message: len})
+    // socket.emit('devices', { message: len})
+    socket.broadcast.emit('devices', { message: (len - 1)})
 
 }, (error: any) => {
     console.log(error)
