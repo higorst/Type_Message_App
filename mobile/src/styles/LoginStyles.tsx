@@ -4,6 +4,7 @@ import { Color } from './Color';
 const LoginStyles = StyleSheet.create({
     container: {
         flex: 1,
+        backgroundColor: Color.backgroundHeader,
     },
     input_box: {
         backgroundColor: Color.primary,
@@ -93,6 +94,7 @@ const LoginStyles = StyleSheet.create({
 
     imageInput: {
         backgroundColor: 'rgba(255, 255, 255, 0.5)',
+        // backgroundColor: Color.backgroundHeader,
         borderStyle: 'dashed',
         borderColor: Color.secondary,
         borderWidth: 1.4,

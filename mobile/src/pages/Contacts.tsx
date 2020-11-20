@@ -8,7 +8,7 @@ import Modal from 'react-native-modal';
 import Header from '../components/Header/Header'
 import Contact from '../components/Contact/Contact'
 
-import DashboardStyles from '../styles/DashboardStyles'
+import ContactsStyles from '../styles/ContactsStyles'
 import PopupStyles from '../styles/PopupStyles';
 
 import Constants from '../constants/Constants'
@@ -83,7 +83,7 @@ export default function Contacts() {
     }
 
     return (
-        <View style={DashboardStyles.container}>
+        <View style={ContactsStyles.container}>
             <Modal
                 isVisible={popup.visible}
                 animationIn="fadeInLeft"
@@ -100,12 +100,7 @@ export default function Contacts() {
 
             <Header user_name={`Olá ${params.user}\ntoque para iniciar uma nova conversa`} avatar={params.image} back onPressback={handleDashboard}/>
 
-            <SafeAreaView style={{
-                flex: 1,
-                flexDirection: 'row',
-                alignItems: 'center',
-                backgroundColor: Color.primary
-            }} >
+            <SafeAreaView style={ContactsStyles.safeAreaView} >
                 <FlatList
                     data={contacts}
                     contentContainerStyle={{

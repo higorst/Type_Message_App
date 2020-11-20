@@ -1,4 +1,5 @@
 import React from 'react'
+import { StatusBar } from 'react-native'
 
 import { NavigationContainer } from '@react-navigation/native'
 import { createStackNavigator } from '@react-navigation/stack'
@@ -20,11 +21,17 @@ import { Color } from './styles/Color';
 export default function Routes() {
     return (
         <Provider store={Store}>
+            <StatusBar 
+                backgroundColor={Color.secondary} 
+                barStyle="light-content"
+                translucent
+                animated
+            />
             <NavigationContainer>
                 <Navigator screenOptions={{
                     headerShown: false,
                     cardStyle: {
-                        backgroundColor: Color.backgroundHeader,
+                        backgroundColor: Color.secondary,
                     }
                 }}>
                     <Screen name="Login" component={Login} />

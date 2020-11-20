@@ -26,9 +26,11 @@ export default {
                 contact: contact,
                 time: time
             })
+            console.log("mensagem enviada")
         } else {
             // armazenar no banco pq usuário está offline
             console.log("--- DESTINÁRIO NÃO ENCONTRADO")
+            console.log("mensagem salva")
         }
         return response.json({message: "mensagem enviada"})
     },

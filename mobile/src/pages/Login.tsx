@@ -1,10 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { Image, KeyboardAvoidingView, Text, View, Keyboard } from 'react-native';
+import { Image, KeyboardAvoidingView, Text, View, Keyboard, StatusBar } from 'react-native';
 import * as ImagePicker from 'expo-image-picker'
 import Modal from 'react-native-modal'
-
-// import socketio from 'socket.io-client'
-// import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import LoginStyles from '../styles/LoginStyles'
 
@@ -22,20 +19,10 @@ import UserController from '../controller/UserController';
 import { User } from '../models/UserModel'
 import api from '../services/api';
 
-
-interface UserLogged {
-    id: string;
-    user: string;
-    password: string;
-    image: string;
-    logged: boolean;
-}
-
 export default function Login() {
 
     const navigation = useNavigation()
 
-    const [verifyLogin, setVerifyLogin] = useState(false)
     const [id, setId] = useState('')
     const [image, setImage] = useState('')
     const [user, setUser] = useState('')
@@ -141,37 +128,18 @@ export default function Login() {
     }
 
     useEffect(() => {
-        // AsyncStorage.getItem('user_storage').then(user_storage => {
-        //     if (user_storage) {
-        //         const user_: UserLogged = JSON.parse(user_storage)
-        //         setVerifyLogin(user_.logged)
-        //         setId(user_.id)
-        //         setUser(user_.user)
-        //         setPassword(user_.password)
-        //         setImage(user_.image)
-
-        //         if(verifyLogin){
-        //             navigation.navigate("Dashboard", {
-        //                 id: user_.id,
-        //                 user: user_.user,
-        //                 password: user_.password,
-        //                 image: image,
-        //             })
-        //         }
-        //     } else {
-        //         setVerifyLogin(false)
-        //     }
-        // })
     })
-
-    // if (!verifyLogin){
-    //     return(
-    //         <View />
-    //     )
-    // }
 
     return (
         <KeyboardAvoidingView style={LoginStyles.container} behavior="position" enabled>
+
+            <StatusBar
+                backgroundColor={Color.secondary}
+                barStyle="light-content"
+                translucent
+                animated
+            />
+
             <Modal
                 isVisible={popup.visible}
                 animationIn="bounceIn"

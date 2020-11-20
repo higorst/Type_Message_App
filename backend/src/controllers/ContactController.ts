@@ -6,6 +6,17 @@ import * as Yup from 'yup'
 
 export default {
 
+    async online(request: any, response: Response){
+        const contactRepository = getRepository(Contact)
+
+        const contact = await contactRepository.find()
+
+        return response.json({
+            users_connected_count: request.users_connected_count,
+            connectedUsers: request.connectedUsers
+        })
+    },
+
     async show(request: Request, response: Response){
         const { user, password } = request.body
         const contactRepository = getRepository(Contact)

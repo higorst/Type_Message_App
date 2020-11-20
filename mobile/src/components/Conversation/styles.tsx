@@ -25,12 +25,12 @@ const styles = StyleSheet.create({
         marginLeft: 10,
 
         borderWidth: 3,
-        borderColor: Color.white,
+        borderColor: Color.borderHeader,
     },
     box_2: {
         height: avatarLenght * 1,
         width: Dimensions.get('screen').width * 0.75 - 10,
-        backgroundColor: Color.green,
+        backgroundColor: Color.secondary,
 
         justifyContent: 'center',
         alignItems: 'flex-start',

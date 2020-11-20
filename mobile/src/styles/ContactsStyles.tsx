@@ -5,11 +5,23 @@ const ContactStyles = StyleSheet.create({
     container: {
         flex: 1,
         justifyContent: 'space-between',
+
+        backgroundColor: Color.borderHeader,
+    },
+    safeAreaView: {
+        flex: 1,
+        flexDirection: 'row',
+        alignItems: 'center',
+        backgroundColor: Color.borderHeader,
     },
     navigator: {
         flexDirection: 'row',
-        justifyContent: 'space-between',
+        justifyContent: 'space-around',
         alignItems: 'center',
+
+        width: Dimensions.get('screen').width,
+
+        // position: 'absolute',
 
         // padding: 20,
         bottom: 0,

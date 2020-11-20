@@ -71,32 +71,11 @@ function Dashboard(props: any) {
     const [conversations, setConversations] = useState<ConversationInterface[]>([])
     const [devices_connect, setDevicesConnect] = useState(0)
     const [updateCards, setUpdateCards] = useState('')
+    const [io, setIO] = useState<SocketIOClient.Socket>()
 
     // carregar dados de usuário logado
     const route = useRoute()
     const params = route.params as UserLogged
-
-    const socket = socketio.connect(Constants.baseURL, {
-        query: { user_id: params.user },
-    })
-
-    socket.on('connect', () => {
-        console.log(`Connected with server. [${params.user}]`);
-    });
-
-    socket.on('connect_error', (err: any) => {
-        console.log(err);
-        handlePopup("Falha na conexão com o servidor!\nTente novamente mais tarde!")
-    })
-
-    socket.on('devices', (data: any) => {
-        setDevicesConnect(data.message)
-    })
-
-    socket.on('message', (data: any) => {
-        console.log(data.message)
-        handleNewMessage(data)
-    })
 
     async function handleNewMessage(data: any) {
         // verificar se existe conversa 
@@ -195,6 +174,8 @@ function Dashboard(props: any) {
     }
 
     async function handleLogout() {
+        console.log("desconectando")
+        io?.disconnect()
         navigation.navigate("Login")
     }
 
@@ -206,9 +187,40 @@ function Dashboard(props: any) {
     }
 
     useEffect(() => {
+
+        const socket = socketio.connect(Constants.baseURL, {
+            query: { user_id: params.user },
+        })
+
+        setIO(socket)
+
+        socket.on('connect', () => {
+            console.log(`Connected with server. [${params.user}]`);
+        });
+
+        socket.on('connect_error', (err: any) => {
+            console.log(err);
+            handlePopup("Falha na conexão com o servidor!\nTente novamente mais tarde!")
+        })
+
+        socket.on('devices', (data: any) => {
+            setDevicesConnect(data.message)
+        })
+
+        socket.on('message', (data: any) => {
+            console.log(data.message)
+            handleNewMessage(data)
+        })
+    }, [])
+
+    useEffect(() => {
         handleLoadConversations()
         setUpdateCards((new Date()).toString())
     }, [params.view])
+
+    useEffect(() => {
+        setUpdateCards((new Date()).toString())
+    }, [props.message_redux])
 
     return (
         <View style={DashboardStyles.container}>
@@ -260,7 +272,7 @@ function Dashboard(props: any) {
 }
 
 const mapStateToProps = (state: any) => ({
-    message: state.dataAll.message
+    message_redux: state.dataAll.message
 })
 
 export default connect(

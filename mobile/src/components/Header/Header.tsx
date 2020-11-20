@@ -33,19 +33,19 @@ export default function Header(props: HeaderProps) {
         <View style={styles.container}>
             { props.back ? (
                 <BorderlessButton onPress={props.onPressback} >
-                    <Feather name="arrow-left" size={24} color={Color.secondary} />
+                    <Feather name="arrow-left" size={24} color={Color.primary} />
                 </BorderlessButton>
             ) : null}
 
             { props.configuration ? (
                 <BorderlessButton onPress={props.onPressConfiguration} >
-                    <Feather name="sliders" size={24} color={Color.secondary} />
+                    <Feather name="sliders" size={24} color={Color.primary} />
                 </BorderlessButton>
             ) : null}
 
             { props.devices_on ? (
                 <BorderlessButton style={styles.online} onPress={props.onContacts}>
-                    <Feather name="cast" size={20} color={Color.green} />
+                    <Feather name="cast" size={20} color={Color.primary} />
                     <Text style={styles.devices_online}>{props.devices_on} online</Text>
                 </BorderlessButton>
             ) : null}
@@ -56,7 +56,7 @@ export default function Header(props: HeaderProps) {
 
             { props.delete ? (
                 <BorderlessButton onPress={props.onPressDelete} >
-                    <Feather name="trash" size={24} color={Color.secondary} />
+                    <Feather name="trash" size={24} color={Color.primary} />
                 </BorderlessButton>
             ) : null}
         </View>

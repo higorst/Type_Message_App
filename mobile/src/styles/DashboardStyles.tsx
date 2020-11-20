@@ -5,11 +5,17 @@ const DashboardStyles = StyleSheet.create({
     container: {
         flex: 1,
         justifyContent: 'space-between',
+
+        backgroundColor: Color.borderHeader,
     },
     navigator: {
         flexDirection: 'row',
-        justifyContent: 'space-between',
+        justifyContent: 'space-around',
         alignItems: 'center',
+
+        width: Dimensions.get('screen').width,
+
+        // position: 'absolute',
 
         // padding: 20,
         bottom: 0,
@@ -24,7 +30,7 @@ const DashboardStyles = StyleSheet.create({
     },
 
     scrollview: {
-        backgroundColor: Color.white
+        backgroundColor: Color.borderHeader
     },
 })
 
