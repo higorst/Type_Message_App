@@ -23,6 +23,9 @@ const styles = StyleSheet.create({
 
         borderRadius: 100,
         marginLeft: 10,
+
+        borderWidth: 3,
+        borderColor: Color.white,
     },
     box_2: {
         height: avatarLenght * 1,
@@ -34,7 +37,6 @@ const styles = StyleSheet.create({
         flexDirection: 'column',
 
         paddingLeft: 15,
-        // paddingRight: 25,
         borderRadius: 20,
         left: Dimensions.get('screen').width * 0.25,
     },
