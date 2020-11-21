@@ -51,6 +51,17 @@ async function create(message_to_save: Message) {
     return { message: "mensagem salva" }
 }
 
+async function deleteByUser(contact: any) {
+    const messageRepository = getRepository(Message)
+
+    const messages = await messageRepository
+        .createQueryBuilder("message")
+        .delete()
+        .where("contact = :contact", { contact })
+        .execute()
+    return
+}
+
 export default {
 
     async send(request: any, response: Response) {
@@ -120,19 +131,20 @@ export default {
         messages_.map(async message => {
             io.to(user_socket).emit('message', message)
         })
+        await deleteByUser(user)
     },
 
 
-    async deleteByIdUser(request: Request, response: Response) {
-        const { id } = request.params
-        const messageRepository = getRepository(Message)
+    // async deleteByIdUser(request: Request, response: Response) {
+    //     const { id } = request.params
+    //     const messageRepository = getRepository(Message)
 
-        const messages = await messageRepository
-            .createQueryBuilder("message")
-            .delete()
-            .where("message.id_contact = :id", { id })
-            .execute()
+    //     const messages = await messageRepository
+    //         .createQueryBuilder("message")
+    //         .delete()
+    //         .where("message.id_contact = :id", { id })
+    //         .execute()
 
-        return response.json({ message: true })
-    },
+    //     return response.json({ message: true })
+    // },
 }

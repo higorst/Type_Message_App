@@ -29,11 +29,11 @@ export default class ConversationController {
         return new Promise((resolve, reject) => db.transaction(
             tx => {
                 tx.executeSql(
-                    `begin;
-                     delete from ${table} where id = '${id}'; 
-                     delete from messages where conversation_id = '${id}';
-                     commit;`
-                    , [], (_, { rows }) => {
+                    // `begin;
+                    //  delete from ${table} where id = '${id}'; 
+                    //  delete from messages where conversation_id = '${id}';
+                    //  commit;`
+                     `delete from ${table} where id = ?;`, [id], (_, { rows }) => {
                         resolve(true)
                 }), (sqlError: any) => {
                     console.log(sqlError);

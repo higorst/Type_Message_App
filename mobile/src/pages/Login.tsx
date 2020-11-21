@@ -61,29 +61,40 @@ export default function Login() {
             res = response.data.res
             setId(response.data.id)
         })
-        if (res) {
-            handlePopup("Já existe esse usuário!\nEscolha outro nome.")
-        } else if (id && user && password && image) {
-
-            // armazenar primeiro no servidor
-            await api.post('/users/create', {
-                id: id,
-                user: user,
-                password: password,
-                image: image,
-            })
-
-            await UserController.add(new User(
-                id,
-                user,
-                password,
-                image,
-            ))
-            handlePopup("Usuário criado com sucesso!")
-            Keyboard.dismiss()
-        } else {
-            handlePopup("Dados incompletos!")
-        }
+        .then(async response => {
+            if (res) {
+                handlePopup("Já existe esse usuário!\nEscolha outro nome.")
+            } else if (id && user && password && image) {
+    
+                // armazenar primeiro no servidor
+                await api.post('/users/create', {
+                    id: id,
+                    user: user,
+                    password: password,
+                    image: image,
+                })
+                .then(async response => {
+                    await UserController.add(new User(
+                        id,
+                        user,
+                        password,
+                        image,
+                    ))
+                    handlePopup("Usuário criado com sucesso!")
+                })
+                .catch(response => {
+                    handlePopup("Sem conexão com a rede!")
+                })
+    
+                Keyboard.dismiss()
+            } else {
+                handlePopup("Dados incompletos!")
+            }
+        })
+        .catch(response => {
+            handlePopup("Sem conexão com a rede!")
+            return
+        })
     }
 
     async function handleLogin() {
@@ -108,7 +119,8 @@ export default function Login() {
                 await api.post('/users/login', {
                     user: user,
                     password: password
-                }).then((response: any) => {
+                })
+                .then((response: any) => {
 
                     if (response.data.id === '') {
                         handlePopup("Dados não conferem!")
@@ -122,6 +134,10 @@ export default function Login() {
                             view: 'login'
                         })
                     }
+                })
+                .catch(response => {
+                    handlePopup("Sem conexão com a rede!")
+                    return
                 })
             }
         })

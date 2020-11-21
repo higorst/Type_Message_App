@@ -113,6 +113,8 @@ function Dashboard(props: any) {
                         })
                     })
 
+                }).catch( (response: any) => {
+                    handleNewMessage(data)
                 })
             } else {
                 await response._array.map(async (res: any) => {
@@ -219,7 +221,9 @@ function Dashboard(props: any) {
     }, [params.view])
 
     useEffect(() => {
-        setUpdateCards((new Date()).toString())
+        if (!params.view.includes('delete_conversation')){
+            setUpdateCards((new Date()).toString())
+        }
     }, [props.message_redux])
 
     return (
