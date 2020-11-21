@@ -7,7 +7,7 @@ const styles = StyleSheet.create({
         paddingTop: 50,
         // backgroundColor: Color.backgroundHeader,
         backgroundColor: Color.secondary,
-        borderBottomWidth: 1,
+        // borderBottomWidth: 1,
         borderColor: Color.borderHeader,
 
         flexDirection: 'row',

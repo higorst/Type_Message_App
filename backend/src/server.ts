@@ -27,7 +27,7 @@ app.use((req: any, res, next) => {
 io.on('connection', (socket: any) => {
     const { user_id } = socket.handshake.query
     console.log(`user ${user_id} connected`)
-    // MessageController.getMessagesFromUser(user_id, io, connectedUsers)
+    MessageController.getMessagesFromUser(user_id, io, connectedUsers)
 
     connectedUsers[user_id] = socket.id
     users_online.push(user_id)

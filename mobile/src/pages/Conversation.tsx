@@ -1,10 +1,14 @@
 import React, { useState, useEffect } from 'react'
-import { View, KeyboardAvoidingView, TextInput, TouchableOpacity, Keyboard } from 'react-native'
+import { View, KeyboardAvoidingView, TextInput, Text, TouchableOpacity, Keyboard } from 'react-native'
 
 import { useNavigation, useFocusEffect, useRoute } from '@react-navigation/native';
 
 import Header from '../components/Header/Header'
 import Message from '../components/Message/Message'
+
+import Modal from 'react-native-modal';
+import PopupStyles from '../styles/PopupStyles';
+
 
 import ConversationStyles from '../styles/ConversationStyles'
 import { ScrollView } from 'react-native-gesture-handler';
@@ -17,6 +21,7 @@ import MessageController from '../controller/MessageController';
 import { Message as MessageModel } from '../models/MessageModel';
 
 import { connect } from 'react-redux';
+import Constants from '../constants/Constants';
 
 interface MessageInterface {
     id: string;
@@ -51,6 +56,11 @@ function Conversation(props: ContactProps) {
     const routes = useRoute()
     const params = routes.params as ContactProps
 
+    const [popup, setPopup] = useState({ visible: false, message: '' })
+    function handlePopup(message: string) {
+        setPopup({ visible: true, message: message })
+    }
+
     async function handleSendMessage() {
         if (lastMessage === '') {
             return
@@ -63,6 +73,8 @@ function Conversation(props: ContactProps) {
             contact_id: params.id_contact,
             contact: params.user_contact,
             message: lastMessage
+        }).catch(error => {
+            handlePopup("Sem conexão com a rede!")
         })
         // save message
         await MessageController.add(new MessageModel(
@@ -89,7 +101,7 @@ function Conversation(props: ContactProps) {
     }
 
     async function handleDeleteConversation() {
-        await ConversationController.deleteById(params.id_conversation).then( response => {
+        await ConversationController.deleteById(params.id_conversation).then(response => {
             Keyboard.dismiss()
             navigation.navigate('Dashboard', {
                 id: params.id,
@@ -171,10 +183,6 @@ function Conversation(props: ContactProps) {
 
     useEffect(() => {
         scroll?.scrollTo({ x: 0, y: 0, animated: true });
-    }, [lastMessage])
-
-    useEffect(() => {
-        scroll?.scrollTo({ x: 0, y: 0, animated: true });
         if (props.message_redux.conversation_id === params.id_conversation) {
             setMessages([...messages, props.message_redux])
         }
@@ -182,6 +190,20 @@ function Conversation(props: ContactProps) {
 
     return (
         <KeyboardAvoidingView style={ConversationStyles.container}>
+            <Modal
+                isVisible={popup.visible}
+                animationIn="fadeInLeft"
+                animationOut="fadeOutRight"
+                hideModalContentWhileAnimating={false}
+                animationInTiming={1000}
+                animationOutTiming={500}
+                onShow={() => setTimeout(() => setPopup({ visible: false, message: popup.message }), Constants.timeoutPopup)}
+            >
+                <View style={PopupStyles.container}>
+                    <Text>{popup.message}</Text>
+                </View>
+            </Modal>
+
             <Header
                 user_name={params.user_contact}
                 avatar={params.image_contact}

@@ -142,8 +142,8 @@ export default function Login() {
 
             <Modal
                 isVisible={popup.visible}
-                animationIn="bounceIn"
-                animationOut="bounceOut"
+                animationIn="fadeInLeft"
+                animationOut="fadeOutRight"
                 hideModalContentWhileAnimating={false}
                 animationInTiming={1000}
                 animationOutTiming={500}
