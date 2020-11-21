@@ -26,6 +26,7 @@ interface UserLogged {
     user: string;
     password: string;
     image: string;
+    update: string;
 }
 
 export default function Contacts() {
@@ -70,14 +71,14 @@ export default function Contacts() {
         api.get('/users').then(response => {
             setContacts(response.data)
         })
-    }, [])
+    }, [params.update])
 
     useEffect(() => {
         api.get('/users/online').then(response => {
             setUsersOnline(response.data.users_online)
             // console.log(response.data.users_online)
         })
-    }, [])
+    }, [params.update])
 
     const renderItem = (contact: ListRenderItem<Contact>, index: ListRenderItem<number>) => {
         let item = contact.item

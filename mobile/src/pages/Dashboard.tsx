@@ -170,6 +170,7 @@ function Dashboard(props: any) {
             user: params.user,
             password: params.password,
             image: params.image,
+            update: new Date().toString()
         })
     }
 
