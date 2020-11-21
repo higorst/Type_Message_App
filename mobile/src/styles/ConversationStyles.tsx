@@ -4,13 +4,14 @@ import { Color } from './Color';
 const ConversationStyles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: Color.secondary
+        backgroundColor: Color.borderHeader
     },
 
     input_group: {
         bottom: 5,
-        marginTop: 10,
-        width: Dimensions.get('screen').width,
+        // marginTop: 10,
+        margin: 10,
+        width: Dimensions.get('screen').width - 20,
         height: 50,
         padding: 5,
 
@@ -20,15 +21,20 @@ const ConversationStyles = StyleSheet.create({
     },
 
     input: {
-        width: Dimensions.get('screen').width * 0.8,
+        width: Dimensions.get('screen').width * 0.8 - 20,
 
-        backgroundColor: Color.backgroundHeader,
+        backgroundColor: Color.primary,
+        color: Color.white,
+
         borderRadius: 20,
         height: 50,
         paddingVertical: 18,
         paddingHorizontal: 24,
+
         textAlignVertical: 'center',
         textAlign: 'justify',
+
+        fontFamily: 'Nunito_600SemiBold',
 
         elevation: 3,
     },
@@ -38,7 +44,9 @@ const ConversationStyles = StyleSheet.create({
         height: 50,
         borderRadius: 50,
 
-        backgroundColor: Color.backgroundHeader,
+        alignContent: 'center',
+
+        backgroundColor: Color.primary,
         justifyContent: 'center',
         alignItems: 'center',
 

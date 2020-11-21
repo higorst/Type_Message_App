@@ -7,7 +7,7 @@ export class createMessages1605735661748 implements MigrationInterface {
                 name: 'messages',
                 columns: [
                     {
-                        name: 'id',
+                        name: 'id_message',
                         type: 'integer',
                         unsigned: true,
                         isPrimary: true,
@@ -15,15 +15,27 @@ export class createMessages1605735661748 implements MigrationInterface {
                         generationStrategy: 'increment'
                     },
                     {
-                        name: 'contact_id',
+                        name: 'id_contact',
                         type: 'varchar',
                     },
                     {
-                        name: 'contact',
+                        name: 'user_contact',
+                        type: 'varchar',
+                    },
+                    {
+                        name: 'image_contact',
+                        type: 'varchar',
+                    },
+                    {
+                        name: 'id',
                         type: 'varchar',
                     },
                     {
                         name: 'message',
+                        type: 'varchar',
+                    },
+                    {
+                        name: 'contact',
                         type: 'varchar',
                     },
                     {

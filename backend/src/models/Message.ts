@@ -1,18 +1,27 @@
 import  { Entity, Column, PrimaryGeneratedColumn } from 'typeorm'
 
-@Entity('contacts')
-export default class Contact {
+@Entity('messages')
+export default class Message {
     @PrimaryGeneratedColumn('increment')
-    id: number;
+    id_message: number;
 
     @Column()
-    contact_id: string;
+    id_contact: string;
 
     @Column()
-    contact: string;
+    user_contact: string;
+
+    @Column()
+    image_contact: string;
+
+    @Column()
+    id: string; //who is receiving
 
     @Column()
     message: string;
+
+    @Column()
+    contact: string;
 
     @Column()
     time: string;

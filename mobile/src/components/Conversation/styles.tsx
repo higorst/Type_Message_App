@@ -30,7 +30,7 @@ const styles = StyleSheet.create({
     box_2: {
         height: avatarLenght * 1,
         width: Dimensions.get('screen').width * 0.75 - 10,
-        backgroundColor: Color.secondary,
+        backgroundColor: Color.conversation,
 
         justifyContent: 'center',
         alignItems: 'flex-start',

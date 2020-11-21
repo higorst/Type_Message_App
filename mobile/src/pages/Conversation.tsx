@@ -209,11 +209,13 @@ function Conversation(props: ContactProps) {
                 <TextInput
                     style={ConversationStyles.input}
                     value={lastMessage}
+                    selectionColor={Color.secondary}
+                    placeholderTextColor={Color.secondary}
                     multiline
                     onChangeText={setLastMessage}
                 />
                 <TouchableOpacity onPress={handleSendMessage} style={ConversationStyles.button_sender}>
-                    <Feather name="send" size={24} color={Color.primary} />
+                    <Feather name="send" size={24} color={Color.secondary} />
                 </TouchableOpacity>
             </View>
 

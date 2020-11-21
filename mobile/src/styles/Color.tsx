@@ -2,7 +2,7 @@ export const Color = {
   primary: '#010035',
   secondary: '#FF6E4E',
 
-  conversation: '#f5a18e',
+  conversation: '#c63c24',
 
   gray_ton: '#8fa7b3',
 

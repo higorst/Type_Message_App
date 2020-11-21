@@ -17,7 +17,7 @@ export default function Header(props: OptionProps) {
             <Feather
                 name={
                     props.type === "message" ? "message-square" :
-                    props.type === "contact" ? "cast" :
+                    props.type === "contact" ? "users" :
                     "log-out"
                 }
                 size={24}

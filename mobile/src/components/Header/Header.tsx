@@ -45,7 +45,7 @@ export default function Header(props: HeaderProps) {
 
             { props.devices_on ? (
                 <BorderlessButton style={styles.online} onPress={props.onContacts}>
-                    <Feather name="cast" size={20} color={Color.primary} />
+                    <Feather name="users" size={20} color={Color.primary} />
                     <Text style={styles.devices_online}>{props.devices_on} online</Text>
                 </BorderlessButton>
             ) : null}
