@@ -174,7 +174,6 @@ function Dashboard(props: any) {
     }
 
     async function handleLogout() {
-        console.log("desconectando")
         io?.disconnect()
         navigation.navigate("Login")
     }

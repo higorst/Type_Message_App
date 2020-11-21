@@ -6,7 +6,7 @@ const routes = Router()
 
 // Contact Controller
 routes.get('/users', ContactController.index)
-routes.get('/users', ContactController.online)
+routes.get('/users/online', ContactController.online)
 routes.post('/users/login', ContactController.show)
 routes.post('/users/create', ContactController.create)
 routes.post('/users/verify', ContactController.verify)

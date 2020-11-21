@@ -32,6 +32,18 @@ const styles = StyleSheet.create({
         marginTop: 5,
         marginBottom: 10,
     },
+
+    online: {
+        borderRadius: 15,
+        width: 15,
+        height: 15,
+        right: 0,
+
+        backgroundColor: Color.green,
+
+        position: 'absolute',
+        elevation: 3,
+    },
 })
 
 export default styles

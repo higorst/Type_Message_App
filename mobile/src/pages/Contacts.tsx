@@ -33,6 +33,7 @@ export default function Contacts() {
     const navigation = useNavigation()
 
     const [contacts, setContacts] = useState<Contact[]>([])
+    const [user_online, setUsersOnline] = useState<string[]>([])
 
     // carregar dados de usuário logado
     const route = useRoute()
@@ -65,11 +66,17 @@ export default function Contacts() {
         })
     }
 
-    useFocusEffect(() => {
+    useEffect(() => {
         api.get('/users').then(response => {
             setContacts(response.data)
         })
+    }, [])
 
+    useEffect(() => {
+        api.get('/users/online').then(response => {
+            setUsersOnline(response.data.users_online)
+            // console.log(response.data.users_online)
+        })
     }, [])
 
     const renderItem = (contact: ListRenderItem<Contact>, index: ListRenderItem<number>) => {
@@ -78,7 +85,12 @@ export default function Contacts() {
             return <View />
         }
         return (
-            <Contact contact={item.user} avatar={item.image} onPress={() => handleNewConversation(item)} />
+            <Contact 
+                contact={item.user} 
+                avatar={item.image} 
+                onPress={() => handleNewConversation(item)} 
+                online={user_online.includes(item.user)}
+            />
         )
     }
 

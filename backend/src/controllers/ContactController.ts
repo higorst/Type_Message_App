@@ -7,13 +7,12 @@ import * as Yup from 'yup'
 export default {
 
     async online(request: any, response: Response){
-        const contactRepository = getRepository(Contact)
-
-        const contact = await contactRepository.find()
-
+        request.connectedUsers.map((user: any) => {
+            console.log(user)
+        })
         return response.json({
-            users_connected_count: request.users_connected_count,
-            connectedUsers: request.connectedUsers
+            // users_connected_count: request.users_connected_count,
+            users_online: request.users_online
         })
     },
 
