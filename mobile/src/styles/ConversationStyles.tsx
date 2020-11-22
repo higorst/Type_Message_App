@@ -7,6 +7,11 @@ const ConversationStyles = StyleSheet.create({
         backgroundColor: Color.borderHeader
     },
 
+    scrollview: {
+        flex: 1,
+        width: Dimensions.get('screen').width
+    },
+
     input_group: {
         bottom: 5,
         // marginTop: 10,
@@ -21,15 +26,17 @@ const ConversationStyles = StyleSheet.create({
     },
 
     input: {
-        width: Dimensions.get('screen').width * 0.8 - 20,
+        flex: 1,
+        marginRight: 15,
 
         backgroundColor: Color.primary,
         color: Color.white,
 
         borderRadius: 20,
         height: 50,
-        paddingVertical: 18,
-        paddingHorizontal: 24,
+        // paddingVertical: 18,
+        // paddingHorizontal: 24,
+        padding: 15,
 
         textAlignVertical: 'center',
         textAlign: 'justify',

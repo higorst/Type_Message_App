@@ -42,6 +42,7 @@ interface ContactProps {
     image_contact: string;
     id_conversation: number;
     message_redux: MessageInterface;
+    users_online?: any
 }
 
 function Conversation(props: ContactProps) {
@@ -209,12 +210,13 @@ function Conversation(props: ContactProps) {
                 avatar={params.image_contact}
                 onPressDelete={handleDeleteConversation}
                 onPressback={handleToDashboard} delete back
+                online={props.users_online.indexOf(params.user_contact) !== -1}
             />
 
             <ScrollView
                 ref={ref => setScroll(ref ? ref : scroll)}
                 onContentSizeChange={(x, y) => handleScroll(x, y)}
-
+                style={ConversationStyles.scrollview}
             >
                 {messages.map((message, index) => {
                     return (
@@ -248,7 +250,8 @@ function Conversation(props: ContactProps) {
 }
 
 const mapStateToProps = (state: any) => ({
-    message_redux: state.dataAll.message
+    message_redux: state.dataAll.message,
+    users_online: state.dataAll.users_online,
 })
 
 

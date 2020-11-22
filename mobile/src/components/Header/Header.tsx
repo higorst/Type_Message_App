@@ -19,6 +19,8 @@ interface HeaderProps {
     onPressConfiguration?: any;
     onPressback?: any;
     onContacts?: any;
+
+    online?: boolean;
 }
 
 export default function Header(props: HeaderProps) {
@@ -52,7 +54,10 @@ export default function Header(props: HeaderProps) {
 
             <Text style={styles.user_name}>{props.user_name}</Text>
 
-            <Image source={{ uri: `data:image/png;base64,${props.avatar}` }} style={styles.avatar} />
+            <View style={styles.image_plus_online}>
+                <Image source={{ uri: `data:image/png;base64,${props.avatar}` }} style={styles.avatar} />
+                {props.online ? <Text style={styles.online_text}>online</Text> : null}                
+            </View>
 
             { props.delete ? (
                 <BorderlessButton onPress={props.onPressDelete} >

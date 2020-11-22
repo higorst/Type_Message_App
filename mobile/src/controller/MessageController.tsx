@@ -19,9 +19,11 @@ export default class MessageController {
                         resolve(insertId)
                     }), (sqlError: any) => {
                         console.log(sqlError);
+                        reject(false)
                     }
             }, (txError) => {
                 console.log(txError);
+                reject(false)
             }));
     }
 

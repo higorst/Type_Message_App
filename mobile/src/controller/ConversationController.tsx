@@ -19,9 +19,11 @@ export default class ConversationController {
                         resolve(insertId)
                     }), (sqlError: any) => {
                         console.log(sqlError);
+                        reject(false)
                     }
             }, (txError) => {
                 console.log(txError);
+                reject(false)
             }));
     }
 

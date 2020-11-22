@@ -125,7 +125,7 @@ export default function Contacts() {
                 </View>
             </Modal>
 
-            <Header user_name={`Olá ${params.user}\ntoque para iniciar uma nova conversa`} avatar={params.image} back onPressback={handleDashboard} />
+            <Header user_name={`Olá ${params.user}\ntoque para iniciar uma nova conversa`} avatar={params.image} />
 
             <SafeAreaView style={ContactsStyles.safeAreaView} >
                 <FlatList

@@ -31,6 +31,19 @@ const styles = StyleSheet.create({
         borderRadius: 100,
     },
 
+    image_plus_online: {
+        flexDirection: 'column',
+        alignItems: 'center',
+    },
+    online_text: {
+        fontFamily: 'Nunito_400Regular_Italic',
+        fontStyle: 'italic',
+        fontWeight: 'bold',
+        fontSize: 12,
+        color: Color.white,
+        textAlign: 'center'
+    },
+
     online: {
         flexDirection: 'column',
         alignItems: 'center',

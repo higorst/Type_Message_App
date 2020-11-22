@@ -24,7 +24,7 @@ import { Message as MessageModel } from '../models/MessageModel';
 import MessageController from '../controller/MessageController';
 
 import { connect } from 'react-redux';
-import { newMessageRedux } from '../redux/Actions'
+import { newMessageRedux, usersOnline } from '../redux/Actions'
 
 interface ConversationInterface {
     id: number;
@@ -91,29 +91,7 @@ function Dashboard(props: any) {
                     params.id,
                 )).then(async (insertId: any) => {
                     console.log("conversa criada")
-
-                    // save message
-                    console.log("add message received")
-                    // console.log(data)
-                    await MessageController.add(new MessageModel(
-                        0,
-                        data.message,
-                        0,
-                        data.time,
-                        params.id,
-                        insertId
-                    )).then((insertId_message: any) => {
-                        // send to conversation with redux
-                        props.newMessageRedux({
-                            id: insertId_message,
-                            message: data.message,
-                            sender: 0,
-                            user_id: params.id,
-                            time: data.time,
-                            conversation_id: insertId,
-                        })
-                    })
-
+                    handleNewMessage(data)
                 }).catch((response: any) => {
                     handleNewMessage(data)
                 })
@@ -129,7 +107,7 @@ function Dashboard(props: any) {
                         data.time,
                         params.id,
                         res.id
-                    )).then((insertId: any) => {
+                    )).then(async (insertId: any) => {
                         // send to conversation with redux
                         props.newMessageRedux({
                             id: insertId,
@@ -139,12 +117,12 @@ function Dashboard(props: any) {
                             time: data.time,
                             conversation_id: res.id,
                         })
+                    }).catch(response => {
+                        handleNewMessage(data)
                     })
                 })
             }
-            // if (!(response.length > 0)) {
             handleLoadConversations()
-            // }
         })
     }
 
@@ -219,6 +197,7 @@ function Dashboard(props: any) {
     useEffect(() => {
         api.get('/users/online').then(response => {
             setUsersOnline(response.data.users_online)
+            props.usersOnline(response.data.users_online)
         })
     }, [devices_connect])
 
@@ -290,5 +269,5 @@ const mapStateToProps = (state: any) => ({
 
 export default connect(
     mapStateToProps,
-    { newMessageRedux },
+    { newMessageRedux, usersOnline },
 )(Dashboard)
