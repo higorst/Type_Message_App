@@ -71,6 +71,7 @@ function Dashboard(props: any) {
     const [conversations, setConversations] = useState<ConversationInterface[]>([])
     const [devices_connect, setDevicesConnect] = useState(0)
     const [updateCards, setUpdateCards] = useState('')
+    const [user_online, setUsersOnline] = useState<string[]>([])
     const [io, setIO] = useState<SocketIOClient.Socket>()
 
     // carregar dados de usuário logado
@@ -113,7 +114,7 @@ function Dashboard(props: any) {
                         })
                     })
 
-                }).catch( (response: any) => {
+                }).catch((response: any) => {
                     handleNewMessage(data)
                 })
             } else {
@@ -172,7 +173,7 @@ function Dashboard(props: any) {
             user: params.user,
             password: params.password,
             image: params.image,
-            update: new Date().toString()
+            update: devices_connect
         })
     }
 
@@ -216,15 +217,22 @@ function Dashboard(props: any) {
     }, [])
 
     useEffect(() => {
-        handleLoadConversations()
-        setUpdateCards((new Date()).toString())
+        api.get('/users/online').then(response => {
+            setUsersOnline(response.data.users_online)
+        })
+    }, [devices_connect])
+
+    useEffect(() => {
+        if (params.view === 'logout') {
+            handleLogout()
+        } else {
+            handleLoadConversations()
+        }
     }, [params.view])
 
     useEffect(() => {
-        if (!params.view.includes('delete_conversation')){
-            setUpdateCards((new Date()).toString())
-        }
-    }, [props.message_redux])
+        setUpdateCards((new Date()).toString())
+    }, [props.message_redux, params.view, devices_connect])
 
     return (
         <View style={DashboardStyles.container}>
@@ -261,6 +269,7 @@ function Dashboard(props: any) {
                             user={conversation.user_contact}
                             n_lidas={0}
                             update_cards={updateCards}
+                            online={user_online.indexOf(conversation.user_contact) !== -1}
                         />
                     )
                 })}

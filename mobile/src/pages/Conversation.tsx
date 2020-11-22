@@ -120,7 +120,7 @@ function Conversation(props: ContactProps) {
             user: params.user,
             password: params.password,
             image: params.image,
-            view: 'conversation'
+            view: 'conversation' + String(params.id_conversation)
         })
     }
 

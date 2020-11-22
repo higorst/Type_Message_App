@@ -42,6 +42,7 @@ io.on('connection', (socket: any) => {
         console.log(`user ${user_id} disconnected`)
 
         delete connectedUsers[user_id]
+        users_online.splice(users_online.indexOf(user_id), 1)
 
         users_connected_count--
         socket.broadcast.emit('devices', { message: (users_connected_count - 1) })

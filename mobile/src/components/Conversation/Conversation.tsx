@@ -9,10 +9,9 @@ interface ConversationProps {
     id: number;
     image: string;
     user: string;
-    // time?: string;
     n_lidas?: number;
-    // last_message?: string;
     update_cards: string;
+    online?: boolean
 }
 
 export default function Conversation(props: ConversationProps) {
@@ -42,10 +41,8 @@ export default function Conversation(props: ConversationProps) {
 
                 <View style={styles.box_2_row_1}>
                     <Text style={styles.user_name}>{props.user}</Text>
-                    {/* <View style={styles.number_box}>
-                        <Text style={styles.number}>{props.n_lidas}</Text>
-                    </View> */}
                     <Text style={styles.time}>{time}</Text>
+                    <Text style={props.online ? styles.onine : styles.offline}>{props.online ? 'online' : 'offline'}</Text>
                 </View>
                 <View style={styles.box_2_row_2}>
                     <Text style={styles.sender}>{sender}</Text>

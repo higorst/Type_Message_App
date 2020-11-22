@@ -88,7 +88,7 @@ export default {
         } else {
             // armazenar no banco pq usuário está offline
             console.log("--- DESTINÁRIO NÃO ENCONTRADO")
-            return response.json(create(
+            await create(
                 {
                     id_message: 0,
                     // info - who is sending
@@ -101,7 +101,7 @@ export default {
                     contact: contact,
                     time: time
                 }
-            ))
+            )
 
 
         }
@@ -133,18 +133,4 @@ export default {
         })
         await deleteByUser(user)
     },
-
-
-    // async deleteByIdUser(request: Request, response: Response) {
-    //     const { id } = request.params
-    //     const messageRepository = getRepository(Message)
-
-    //     const messages = await messageRepository
-    //         .createQueryBuilder("message")
-    //         .delete()
-    //         .where("message.id_contact = :id", { id })
-    //         .execute()
-
-    //     return response.json({ message: true })
-    // },
 }

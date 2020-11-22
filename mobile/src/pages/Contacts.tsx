@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react'
 import { View, Text, SafeAreaView, FlatList, ListRenderItem } from 'react-native'
-import { useNavigation, useFocusEffect, useRoute } from '@react-navigation/native'
+import { useNavigation, useRoute } from '@react-navigation/native'
 
 import Modal from 'react-native-modal';
 
 // components
 import Header from '../components/Header/Header'
+import Option from '../components/Option/Option'
 import Contact from '../components/Contact/Contact'
 
 import ContactsStyles from '../styles/ContactsStyles'
@@ -14,6 +15,7 @@ import PopupStyles from '../styles/PopupStyles';
 import Constants from '../constants/Constants'
 import { Color } from '../styles/Color';
 import api from '../services/api';
+import DashboardStyles from '../styles/DashboardStyles';
 
 interface Contact {
     id: string;
@@ -67,6 +69,18 @@ export default function Contacts() {
         })
     }
 
+    async function handleLogout() {
+        // params.io?.disconnect()
+        // navigation.navigate("Login")
+        navigation.navigate("Dashboard", {
+            id: params.id,
+            user: params.user,
+            password: params.password,
+            image: params.image,
+            view: 'logout'
+        })
+    }
+
     useEffect(() => {
         api.get('/users').then(response => {
             setContacts(response.data)
@@ -76,21 +90,21 @@ export default function Contacts() {
     useEffect(() => {
         api.get('/users/online').then(response => {
             setUsersOnline(response.data.users_online)
-            // console.log(response.data.users_online)
+            // setContacts(contacts)
         })
     }, [params.update])
 
     const renderItem = (contact: ListRenderItem<Contact>, index: ListRenderItem<number>) => {
         let item = contact.item
-        if (item.user === params.user){
+        if (item.user === params.user) {
             return <View />
         }
         return (
-            <Contact 
-                contact={item.user} 
-                avatar={item.image} 
-                onPress={() => handleNewConversation(item)} 
-                online={user_online.includes(item.user)}
+            <Contact
+                contact={item.user}
+                avatar={item.image}
+                onPress={() => handleNewConversation(item)}
+                online={user_online.indexOf(item.user) !== -1}
             />
         )
     }
@@ -111,7 +125,7 @@ export default function Contacts() {
                 </View>
             </Modal>
 
-            <Header user_name={`Olá ${params.user}\ntoque para iniciar uma nova conversa`} avatar={params.image} back onPressback={handleDashboard}/>
+            <Header user_name={`Olá ${params.user}\ntoque para iniciar uma nova conversa`} avatar={params.image} back onPressback={handleDashboard} />
 
             <SafeAreaView style={ContactsStyles.safeAreaView} >
                 <FlatList
@@ -125,6 +139,12 @@ export default function Contacts() {
                     keyExtractor={(contact, index) => index.toString()}
                 />
             </SafeAreaView>
+
+            <View style={DashboardStyles.navigator}>
+                <Option type="message" onPress={handleDashboard} />
+                <Option type="contact" selected />
+                <Option type="logout" onPress={handleLogout} />
+            </View>
         </View>
     )
 }

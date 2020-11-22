@@ -63,10 +63,11 @@ const styles = StyleSheet.create({
         flex: 1,
 
         marginRight: 10,
+        marginBottom: 5,
+        paddingLeft: 10,
 
-        flexDirection: 'row',
-        justifyContent: 'flex-start',
-        alignItems: 'center',
+        flexDirection: 'column',
+        justifyContent: 'center',
     },
 
     user_name: {
@@ -75,21 +76,20 @@ const styles = StyleSheet.create({
         fontSize: 14,
         color: Color.white,
     },
-    number_box: {
-        width: 22,
-        height: 22,
-        borderRadius: 50,
-        backgroundColor: Color.primary,
-
-        justifyContent: 'center',
-        alignContent: 'center',
-    },
-    number: {
+    onine: {
         fontFamily: 'Nunito_400Regular_Italic',
         fontStyle: 'italic',
         fontWeight: 'bold',
         fontSize: 12,
         color: Color.white,
+        textAlign: 'center'
+    },
+    offline: {
+        fontFamily: 'Nunito_400Regular_Italic',
+        fontStyle: 'italic',
+        fontWeight: 'bold',
+        fontSize: 12,
+        color: Color.primary,
         textAlign: 'center'
     },
     time: {

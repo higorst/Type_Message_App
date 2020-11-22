@@ -114,7 +114,7 @@ export default function Login() {
                     image: image,
                     view: 'login'
                 })
-
+                
             } else {
                 await api.post('/users/login', {
                     user: user,
