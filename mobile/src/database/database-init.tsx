@@ -29,9 +29,10 @@ export default class DatabaseInit {
             `create table if not exists conversations (
                 id integer primary key autoincrement,
                 id_contact text,
-                user_contact text UNIQUE,
+                user_contact text,
                 image_contact text,
-                user_id text
+                user_id text,
+                user_id_user_contact text UNIQUE
             );`,
                 
             `create table if not exists messages (

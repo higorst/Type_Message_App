@@ -7,13 +7,14 @@ const db = DatabaseConnection.getConnection()
 export default class ConversationController {
 
     static add(param: Conversation) {
+        const user_id_user_contact = param.user_id + param.user_contact
         return new Promise((resolve, reject) => db.transaction(
             tx => {
                 tx.executeSql(
                     `insert into ${table} 
-                    (id_contact, user_contact, image_contact, user_id) 
-                    values (?, ?, ?, ?)`,
-                    [param.id_contact, param.user_contact, param.image_contact, param.user_id],
+                    (id_contact, user_contact, image_contact, user_id, user_id_user_contact) 
+                    values (?, ?, ?, ?, ?)`,
+                    [param.id_contact, param.user_contact, param.image_contact, param.user_id, user_id_user_contact],
                     (_, { insertId, rows }) => {
                         console.log("id conversation insert: " + insertId);
                         resolve(insertId)
@@ -46,9 +47,9 @@ export default class ConversationController {
             }))
     }
 
-    static findByUser(user_contact: string) {
+    static findByUser(user_id: string, user_contact: string) {
         return new Promise((resolve, reject) => db.transaction(tx => {
-            tx.executeSql(`select id from ${table} where user_contact=?`, [user_contact], (id, { rows }) => {
+            tx.executeSql(`select id from ${table} where user_id_user_contact=?`, [user_id + user_contact], (_, { rows }) => {
                 resolve(rows)
             }), (sqlError: any) => {
                 console.log(sqlError);

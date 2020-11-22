@@ -14,7 +14,6 @@ const data = (state = initialState, action: any) => {
         case new_message:
             return { ...state, message: action.payload.message };
         case users_online:
-            console.log('reducer online')
             return { ...state, users_online: action.payload.users };
         default:
             return state;

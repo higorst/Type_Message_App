@@ -18,6 +18,7 @@ import Constants from '../constants/Constants'
 import UserController from '../controller/UserController';
 import { User } from '../models/UserModel'
 import api from '../services/api';
+import { StackActions } from 'react-navigation';
 
 export default function Login() {
 
@@ -144,7 +145,7 @@ export default function Login() {
     }
 
     useEffect(() => {
-    })
+    }, [])
 
     return (
         <KeyboardAvoidingView style={LoginStyles.container} behavior="position" enabled>

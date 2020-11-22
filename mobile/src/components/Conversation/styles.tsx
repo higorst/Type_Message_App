@@ -59,15 +59,23 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     box_2_row_2: {
-        width: Dimensions.get('screen').width * 0.75 - 35,
         flex: 1,
 
         marginRight: 10,
         marginBottom: 5,
         paddingLeft: 10,
 
-        flexDirection: 'column',
         justifyContent: 'center',
+        flexDirection: 'row'
+    },
+    box_2_row_2_col_1: {
+        flex: 1,
+        justifyContent: 'center',
+    },
+    box_2_row_2_col_2: {
+        right: 0,
+        paddingLeft: 5,
+        justifyContent: 'center'
     },
 
     user_name: {
@@ -76,10 +84,9 @@ const styles = StyleSheet.create({
         fontSize: 14,
         color: Color.white,
     },
-    onine: {
+    online: {
         fontFamily: 'Nunito_400Regular_Italic',
         fontStyle: 'italic',
-        fontWeight: 'bold',
         fontSize: 12,
         color: Color.white,
         textAlign: 'center'
@@ -87,7 +94,6 @@ const styles = StyleSheet.create({
     offline: {
         fontFamily: 'Nunito_400Regular_Italic',
         fontStyle: 'italic',
-        fontWeight: 'bold',
         fontSize: 12,
         color: Color.primary,
         textAlign: 'center'

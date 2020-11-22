@@ -25,6 +25,7 @@ import MessageController from '../controller/MessageController';
 
 import { connect } from 'react-redux';
 import { newMessageRedux, usersOnline } from '../redux/Actions'
+import { StackActions } from 'react-navigation';
 
 interface ConversationInterface {
     id: number;
@@ -80,7 +81,7 @@ function Dashboard(props: any) {
 
     async function handleNewMessage(data: any) {
         // verificar se existe conversa 
-        await ConversationController.findByUser(data.user_contact).then(async (response: any) => {
+        await ConversationController.findByUser(params.id, data.user_contact).then(async (response: any) => {
             if (!(response.length > 0)) {
                 console.log("criando nova conversa")
                 await ConversationController.add(new ConversationModel(

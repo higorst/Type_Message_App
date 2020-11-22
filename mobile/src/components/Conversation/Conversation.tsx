@@ -37,21 +37,31 @@ export default function Conversation(props: ConversationProps) {
         <TouchableOpacity
             onPress={props.onPress}
             style={styles.container}>
+
             <View style={styles.box_2}>
 
                 <View style={styles.box_2_row_1}>
                     <Text style={styles.user_name}>{props.user}</Text>
                     <Text style={styles.time}>{time}</Text>
-                    <Text style={props.online ? styles.onine : styles.offline}>{props.online ? 'online' : 'offline'}</Text>
                 </View>
+
                 <View style={styles.box_2_row_2}>
-                    <Text style={styles.sender}>{sender}</Text>
-                    <Text style={styles.message}>{last_msg}</Text>
+                    <View style={styles.box_2_row_2_col_1}>
+                        <Text style={styles.sender}>{sender}</Text>
+                        <Text style={styles.message}>{last_msg}</Text>
+                    </View>
+
+                    <View style={styles.box_2_row_2_col_2}>
+                        <Text style={props.online ? styles.online : styles.offline}>{props.online ? 'online' : 'offline'}</Text>
+                    </View>
                 </View>
+
             </View>
+
             <View style={styles.box_1}>
                 <Image source={{ uri: `data:image/png;base64,${props.image}` }} style={styles.contact_image} />
             </View>
+
         </TouchableOpacity>
     )
 }

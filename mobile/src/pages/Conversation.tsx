@@ -74,31 +74,34 @@ function Conversation(props: ContactProps) {
             contact_id: params.id_contact,
             contact: params.user_contact,
             message: lastMessage
-        }).catch(error => {
+        })
+        .then(async response => {
+            // save message
+            await MessageController.add(new MessageModel(
+                0,
+                lastMessage,
+                1,
+                current_time.getHours().toString() + ":" + current_time.getMinutes().toString(),
+                params.id,
+                idConversation
+            )).then((insertId: any) => {
+                console.log("add sended message")
+                // adicionar a lista de mensagens
+                setMessages([...messages, {
+                    id: insertId,
+                    message: lastMessage,
+                    sender: 1,
+                    user_id: params.id,
+                    time: current_time.getHours().toString() + ':' + current_time.getMinutes().toString(),
+                    conversation_id: props.id_conversation,
+                },])
+            })
+            setLastMessage('')
+            scroll?.scrollTo({ x: 0, y: 0, animated: true });
+        })
+        .catch(error => {
             handlePopup("Sem conexão com a rede!")
         })
-        // save message
-        await MessageController.add(new MessageModel(
-            0,
-            lastMessage,
-            1,
-            current_time.getHours().toString() + ":" + current_time.getMinutes().toString(),
-            params.id,
-            params.id_conversation
-        )).then((insertId: any) => {
-            console.log("add sended message")
-            // adicionar a lista de mensagens
-            setMessages([...messages, {
-                id: insertId,
-                message: lastMessage,
-                sender: 1,
-                user_id: params.id,
-                time: current_time.getHours().toString() + ':' + current_time.getMinutes().toString(),
-                conversation_id: props.id_conversation,
-            },])
-        })
-        setLastMessage('')
-        scroll?.scrollTo({ x: 0, y: 0, animated: true });
     }
 
     async function handleDeleteConversation() {
@@ -141,6 +144,7 @@ function Conversation(props: ContactProps) {
 
         // para quando vim da dashboard
         if (params.id_conversation) {
+            setIdConversation(params.id_conversation)
             MessageController.findById(params.id_conversation).then((response: any) => {
                 // console.log("messages --------")
                 // console.log(response)
