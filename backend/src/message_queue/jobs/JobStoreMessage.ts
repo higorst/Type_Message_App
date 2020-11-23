@@ -4,6 +4,10 @@ import * as Yup from 'yup'
 
 export default {
     key: 'JobStoreMessage',
+    options: {
+        priority: 2,
+        attempts: 3,
+    },
     async handle(data: any) {
         const {
             // info - who is sending
@@ -17,7 +21,7 @@ export default {
             time,
         } = data.data
 
-        console.log(`[JobStoreMessage]: input: '${message}'`)
+        console.log(`[JobStoreMessage]: input message '${message}'`)
         const messageRepository = getRepository(Message)
 
         const data_store = {
@@ -49,7 +53,7 @@ export default {
 
         await messageRepository.save(message_)
         
-        console.log(`[JobStoreMessage]: output '${message}'`)
-        console.log(`[JobStoreMessage]: save on database '${message}'`)
+        console.log(`[JobStoreMessage]: output message '${message}'`)
+        console.log(`[JobStoreMessage]: save on database message '${message}'`)
     }
 }

@@ -66,7 +66,11 @@ function Conversation(props: ContactProps) {
         if (lastMessage === '') {
             return
         }
-        let current_time = new Date()
+        const current_time = new Date()
+        let hours = current_time.getHours().toString()
+        let minutes = current_time.getMinutes().toString()
+        hours = hours === '0' ? '00' : hours
+        minutes = minutes === '0' ? '00' : minutes
         await api.post('messages/send', {
             id: params.id,
             user: params.user,
@@ -82,7 +86,7 @@ function Conversation(props: ContactProps) {
                 0,
                 lastMessage,
                 1,
-                current_time.getHours().toString() + ":" + current_time.getMinutes().toString(),
+                hours + ":" + minutes,
                 params.id,
                 idConversation
             )).then((insertId: any) => {
@@ -101,6 +105,46 @@ function Conversation(props: ContactProps) {
         .catch(error => {
             handlePopup("Sem conexão com a rede!")
         })
+
+
+        // if (lastMessage === '') {
+        //     return
+        // }
+        // let current_time = new Date()
+        // await api.post('messages/send', {
+        //     id: params.id,
+        //     user: params.user,
+        //     image: params.image,
+        //     contact_id: params.id_contact,
+        //     contact: params.user_contact,
+        //     message: lastMessage
+        // })
+        // .then(async response => {
+        //     setLastMessage('')
+        //     // save message
+        //     await MessageController.add(new MessageModel(
+        //         0,
+        //         lastMessage,
+        //         1,
+        //         current_time.getHours().toString() + ":" + current_time.getMinutes().toString(),
+        //         params.id,
+        //         idConversation
+        //     )).then((insertId: any) => {
+        //         console.log("add sended message")
+        //         // adicionar a lista de mensagens
+        //         setMessages([...messages, {
+        //             id: insertId,
+        //             message: lastMessage,
+        //             sender: 1,
+        //             user_id: params.id,
+        //             time: current_time.getHours().toString() + ':' + current_time.getMinutes().toString(),
+        //             conversation_id: props.id_conversation,
+        //         },])
+        //     })
+        // })
+        // .catch(error => {
+        //     handlePopup("Sem conexão com a rede!")
+        // })
     }
 
     async function handleDeleteConversation() {

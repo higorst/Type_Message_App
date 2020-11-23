@@ -3,7 +3,7 @@ import redisConfig from '../config/redis'
 
 import * as jobs from '../jobs'
 
-const queues = Object.values(jobs).map( job => ({
+const queues = Object.values(jobs).map(job => ({
     bull: new Queue(job.key, redisConfig),
     name: job.key,
     handle: job.handle,
@@ -20,8 +20,11 @@ export default {
     process() {
         return this.queues.forEach(queue => {
             queue.bull.process(queue.handle)
+            queue.bull.on('completed', job => {
+                console.log(`[QUEUE]: Job ${queue.name} has been completed`)
+            })
             queue.bull.on('failed', (job: any, err: any) => {
-                console.log('job failed', queue.name)
+                console.log(`[QUEUE]: Job ${queue.name} has been failed\n         Inserting a new job`)
                 if (queue.name === 'JobSendMessage'){
                     const { 
                         id_contact,
