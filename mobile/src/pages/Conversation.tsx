@@ -76,6 +76,7 @@ function Conversation(props: ContactProps) {
             message: lastMessage
         })
         .then(async response => {
+            setLastMessage('')
             // save message
             await MessageController.add(new MessageModel(
                 0,
@@ -96,8 +97,6 @@ function Conversation(props: ContactProps) {
                     conversation_id: props.id_conversation,
                 },])
             })
-            setLastMessage('')
-            scroll?.scrollTo({ x: 0, y: 0, animated: true });
         })
         .catch(error => {
             handlePopup("Sem conexão com a rede!")
@@ -154,7 +153,7 @@ function Conversation(props: ContactProps) {
             // para quando selecionar um novo contato
         } else {
             // verificar se existe conversa cadastrada. Se não houver -> cadastrar
-            ConversationController.findByUser(params.user_contact).then(async (response: any) => {
+            ConversationController.findByUser(params.id, params.user_contact).then(async (response: any) => {
                 if (response.length === 0) {
                     // add conversation
                     const user_id = params.id
@@ -240,6 +239,7 @@ function Conversation(props: ContactProps) {
                     style={ConversationStyles.input}
                     value={lastMessage}
                     selectionColor={Color.secondary}
+                    placeholder="Escreva uma mensagem"
                     placeholderTextColor={Color.secondary}
                     multiline
                     onChangeText={setLastMessage}

@@ -7,11 +7,12 @@ import * as Yup from 'yup'
 export default {
 
     async online(request: any, response: Response){
-        request.connectedUsers.map((user: any) => {
-            console.log(user)
-        })
+        // const users = request.SocketService.get_users_online()
+        // users.map((user: any) => {
+        //     console.log(user)
+        // })
         return response.json({
-            // users_connected_count: request.users_connected_count,
+            // users_connected_count: request.SocketService.get_users_connected_count(),
             users_online: request.users_online
         })
     },
