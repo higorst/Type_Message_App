@@ -66,85 +66,56 @@ function Conversation(props: ContactProps) {
         if (lastMessage === '') {
             return
         }
+        const sended_message = lastMessage
+        setLastMessage('')
         const current_time = new Date()
         let hours = current_time.getHours().toString()
         let minutes = current_time.getMinutes().toString()
         hours = hours === '0' ? '00' : hours
         minutes = minutes === '0' ? '00' : minutes
-        await api.post('messages/send', {
-            id: params.id,
-            user: params.user,
-            image: params.image,
-            contact_id: params.id_contact,
-            contact: params.user_contact,
-            message: lastMessage
-        })
-        .then(async response => {
-            setLastMessage('')
-            // save message
-            await MessageController.add(new MessageModel(
-                0,
-                lastMessage,
-                1,
-                hours + ":" + minutes,
-                params.id,
-                idConversation
-            )).then((insertId: any) => {
+
+        // save message
+        await MessageController.add(new MessageModel(
+            0,
+            sended_message,
+            1,
+            hours + ":" + minutes,
+            params.id,
+            idConversation
+            )).then(async (insertId: any) => {
                 console.log("add sended message")
                 // adicionar a lista de mensagens
                 setMessages([...messages, {
                     id: insertId,
-                    message: lastMessage,
+                    message: sended_message,
                     sender: 1,
                     user_id: params.id,
-                    time: current_time.getHours().toString() + ':' + current_time.getMinutes().toString(),
+                    time: hours + ":" + minutes,
                     conversation_id: props.id_conversation,
                 },])
+                await api.post('messages/send', {
+                    id: params.id,
+                    user: params.user,
+                    image: params.image,
+                    contact_id: params.id_contact,
+                    contact: params.user_contact,
+                    time: hours + ":" + minutes,
+                    message: sended_message
+                })
+                .then(async response => {})
+                .catch(async error => {
+                    handlePopup("Sem conexão com a rede!\nMensagem não enviada")
+                    setMessages([...messages, {
+                        id: insertId,
+                        message: sended_message,
+                        sender: 3,
+                        user_id: params.id,
+                        time: hours + ":" + minutes,
+                        conversation_id: props.id_conversation,
+                    },])
+                    MessageController.deleteById(insertId)
+                })
             })
-        })
-        .catch(error => {
-            handlePopup("Sem conexão com a rede!")
-        })
-
-
-        // if (lastMessage === '') {
-        //     return
-        // }
-        // let current_time = new Date()
-        // await api.post('messages/send', {
-        //     id: params.id,
-        //     user: params.user,
-        //     image: params.image,
-        //     contact_id: params.id_contact,
-        //     contact: params.user_contact,
-        //     message: lastMessage
-        // })
-        // .then(async response => {
-        //     setLastMessage('')
-        //     // save message
-        //     await MessageController.add(new MessageModel(
-        //         0,
-        //         lastMessage,
-        //         1,
-        //         current_time.getHours().toString() + ":" + current_time.getMinutes().toString(),
-        //         params.id,
-        //         idConversation
-        //     )).then((insertId: any) => {
-        //         console.log("add sended message")
-        //         // adicionar a lista de mensagens
-        //         setMessages([...messages, {
-        //             id: insertId,
-        //             message: lastMessage,
-        //             sender: 1,
-        //             user_id: params.id,
-        //             time: current_time.getHours().toString() + ':' + current_time.getMinutes().toString(),
-        //             conversation_id: props.id_conversation,
-        //         },])
-        //     })
-        // })
-        // .catch(error => {
-        //     handlePopup("Sem conexão com a rede!")
-        // })
     }
 
     async function handleDeleteConversation() {
@@ -176,22 +147,10 @@ function Conversation(props: ContactProps) {
     }
 
     useEffect(() => {
-        // setMessages([
-        //   {
-        //       id: '1',
-        //       message: 'Hi, how are you doing?',
-        //       sender: false,
-        //       time: '18:45',
-        //   },
-        // ])
-
         // para quando vim da dashboard
         if (params.id_conversation) {
             setIdConversation(params.id_conversation)
             MessageController.findById(params.id_conversation).then((response: any) => {
-                // console.log("messages --------")
-                // console.log(response)
-                // console.log(idConversation)
                 setMessages(response._array)
             })
             // para quando selecionar um novo contato
@@ -211,18 +170,15 @@ function Conversation(props: ContactProps) {
                         setIdConversation(id)
                     })
                 } else {
-                    response._array.map((data: any) => {
-                        // console.log(data.id)
+                    let id_cv = 0
+                    await response._array.map((data: any) => {
                         setIdConversation(data.id)
+                        id_cv = data.id
+                    })
+                    await MessageController.findById(id_cv).then((response: any) => {
+                        setMessages(response._array)
                     })
                 }
-                // get messages
-                MessageController.findById(idConversation).then((response: any) => {
-                    // console.log("messages --------")
-                    // console.log(response)
-                    console.log(idConversation)
-                    setMessages(response._array)
-                })
             })
         }
 
@@ -230,7 +186,7 @@ function Conversation(props: ContactProps) {
     }, [])
 
     useEffect(() => {
-        scroll?.scrollTo({ x: 0, y: 0, animated: true });
+        // scroll?.scrollTo({ x: 0, y: 0, animated: true });
         if (props.message_redux.conversation_id === params.id_conversation) {
             setMessages([...messages, props.message_redux])
         }

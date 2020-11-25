@@ -36,6 +36,32 @@ const styles = StyleSheet.create({
         backgroundColor: Color.white
     },
 
+    fail: {
+        width: Dimensions.get('window').width * 0.7 - 10,
+        paddingLeft: 20,
+        paddingRight: 20,
+        paddingBottom: 10,
+        elevation: 3,
+
+        borderRadius: 20,
+        marginTop: 5,
+        marginBottom: 5,
+
+        // sender
+        marginLeft: Dimensions.get('window').width * 0.3,
+        marginRight: 5,
+        // backgroundColor: '#80b6ff'
+        backgroundColor: Color.primary,
+        opacity: 0.5
+    },
+
+    message_fail: {
+        fontFamily: 'Nunito_600SemiBold',
+        fontSize: 14,
+        color: Color.secondary,
+        marginTop: 5,
+    },
+
     message: {
         fontFamily: 'Nunito_600SemiBold',
         fontSize: 14,

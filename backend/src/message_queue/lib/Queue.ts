@@ -22,8 +22,10 @@ export default {
             queue.bull.process(queue.handle)
             queue.bull.on('completed', job => {
                 console.log(`[QUEUE]: Job ${queue.name} has been completed`)
+                console.log()
             })
             queue.bull.on('failed', (job: any, err: any) => {
+                console.log()
                 console.log(`[QUEUE]: Job ${queue.name} has been failed\n         Inserting a new job`)
                 if (queue.name === 'JobSendMessage'){
                     const { 

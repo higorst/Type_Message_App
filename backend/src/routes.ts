@@ -15,5 +15,8 @@ routes.post('/users/verify', ContactController.verify)
 routes.post('/messages/send', MessageController.send)
 
 // Connection
+routes.get('/status', (request, response) => {
+    response.json({ message: "server up!" })
+})
 
 export default routes

@@ -180,6 +180,10 @@ function Dashboard(props: any) {
             console.log(`Connected with server. [${params.user}]`);
         });
 
+        socket.on('disconnect', () => {
+            console.log(`Disconnect with server. [${params.user}]`);
+        })
+
         socket.on('connect_error', (err: any) => {
             console.log(err);
             handlePopup("Falha na conexão com o servidor!\nTente novamente mais tarde!")
