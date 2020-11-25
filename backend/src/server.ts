@@ -13,7 +13,13 @@ import cors from 'cors'
 
 // Queue.process(JobSendMessage.handle)
 // --------------------------
+const cluster = require('cluster');
+const numCPUs = require('os').cpus().length;
 
+const port = process.env.PORT || 3000
+
+// const { NODE_INSTANCE } = process.env
+// const port = 3001 + parseInt(NODE_INSTANCE)
 
 const express = require('express');
 const http = require('http');
@@ -39,58 +45,24 @@ app.use(express.json({ limit: '50mb' }));
 app.use(cors())
 app.use(routes)
 
-server.listen(process.env.PORT || 3000)
-// --------------------------
-
-// const app = express()
-
-// const server = require("http").Server(app)
-// const io = require("socket.io")(server)
-
-// var connectedUsers = <string[]>[]
-// var users_online = <string[]>[]
-// var users_connected_count = 0
-// app.use((req: any, res, next) => {
-//     req.io = io
-//     req.connectedUsers = connectedUsers
-//     req.users_connected_count = users_connected_count
-//     req.users_online = users_online
-
-//     // para continuar o fluxo das rotas
-//     return next()
-// })
-// io.on('connection', (socket: any) => {
-//     const { user_id } = socket.handshake.query
-//     console.log(`user ${user_id} connected`)
-
-//     // do you receive messages when was offline?
-//     MessageController.getMessagesFromUser(user_id, io, connectedUsers)
-
-//     connectedUsers[user_id] = socket.id
-//     users_online.push(user_id)
-//     users_connected_count ++
-
-//     socket.emit('devices', { message: (users_connected_count - 1) })
-//     socket.broadcast.emit('devices', { message: (users_connected_count - 1) })
-
-//     socket.on('disconnect', function () {
-//         // remove saved socket from users object
-//         const { user_id } = socket.handshake.query
-//         console.log(`user ${user_id} disconnected`)
-
-//         delete connectedUsers[user_id]
-//         users_online.splice(users_online.indexOf(user_id), 1)
-
-//         users_connected_count--
-//         socket.broadcast.emit('devices', { message: (users_connected_count - 1) })
-//     });
-
-// }, (error: any) => {
-//     console.log(error)
-// })
-
-// app.use(express.json({ limit: '50mb' }));
-// app.use(cors())
-// app.use(routes)
-
-// server.listen(process.env.PORT || 3000)
+// server.listen(port)
+if (cluster.isMaster) {
+    console.log(`Master ${process.pid} is running`);
+  
+    // Fork workers.
+    for (let i = 0; i <= numCPUs; i++) {
+      cluster.fork();
+    }
+  
+    cluster.on('exit', (worker: any, code: any, signal: any) => {
+      console.log(`[SERVER]: worker ${worker.process.pid} died`);
+    });
+  } else {
+    // Workers can share any TCP connection
+    // In this case it is an HTTP server
+    server.listen(port, () => {
+        console.log(`server listening at port ${port}`)
+    });
+  
+    console.log(`[SERVER]: Worker ${process.pid} started`);
+  }

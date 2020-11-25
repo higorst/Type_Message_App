@@ -7,12 +7,7 @@ import * as Yup from 'yup'
 export default {
 
     async online(request: any, response: Response){
-        // const users = request.SocketService.get_users_online()
-        // users.map((user: any) => {
-        //     console.log(user)
-        // })
         return response.json({
-            // users_connected_count: request.SocketService.get_users_connected_count(),
             users_online: request.users_online
         })
     },
@@ -27,7 +22,7 @@ export default {
             .andWhere("user.password = :password", {password})
             .select(["user.id", "user.user", "user.password", "user.image"])
             .execute()
-        if (contact[0].user_id.length > 0){
+        if (contact.length > 0){
             return response.json({
                 id: contact[0].user_id,
                 user: contact[0].user_user,

@@ -82,15 +82,22 @@ export default function Contacts() {
     }
 
     useEffect(() => {
-        api.get('/users').then(response => {
+        api.get('/users')
+        .then(response => {
             setContacts(response.data)
+        })
+        .catch(response => {
+            handlePopup("Sem conexão com a rede!")
         })
     }, [params.update])
 
     useEffect(() => {
-        api.get('/users/online').then(response => {
+        api.get('/users/online')
+        .then(response => {
             setUsersOnline(response.data.users_online)
-            // setContacts(contacts)
+        })
+        .catch(response => {
+            handlePopup("Sem conexão com a rede!")
         })
     }, [params.update])
 

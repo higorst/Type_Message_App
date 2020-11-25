@@ -19,13 +19,13 @@ async function deleteByUser(contact: any) {
 export default {
 
     async send(request: any, response: Response) {
-        const date = new Date()
-        let hours = date.getHours().toString()
-        let minutes = date.getMinutes().toString()
-        hours = hours === '0' ? '00' : hours
-        minutes = minutes === '0' ? '00' : minutes
-        const time = hours + ":" + minutes
-        const { id, user, image, contact_id, contact, message } = request.body
+        // const date = new Date()
+        // let hours = date.getHours().toString()
+        // let minutes = date.getMinutes().toString()
+        // hours = hours === '0' ? '00' : hours
+        // minutes = minutes === '0' ? '00' : minutes
+        // const time = hours + ":" + minutes
+        const { id, user, image, contact_id, contact, message, time } = request.body
 
         const connectedUsers = request.connectedUsers
         const user_socket = connectedUsers[contact]
