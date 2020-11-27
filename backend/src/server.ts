@@ -4,25 +4,13 @@ import './queue'
 
 import routes from './routes'
 
-// import express from 'express'
 import cors from 'cors'
 
-// --------------------------
-// import Queue from './message_queue/lib/Queue'
-// import JobSendMessage from './message_queue/jobs/JobSendMessage'
-
-// Queue.process(JobSendMessage.handle)
-// --------------------------
 const cluster = require('cluster');
 const numCPUs = require('os').cpus().length;
 
-// const port = process.env.PORT || 3000
-
 const { NODE_INSTANCE } = process.env
 const port = 3000 + parseInt(NODE_INSTANCE ? NODE_INSTANCE : '0')
-
-// const { NODE_INSTANCE } = process.env
-// const port = 3001 + parseInt(NODE_INSTANCE)
 
 const express = require('express');
 const http = require('http');
@@ -47,9 +35,6 @@ app.use((req: any, res: any, next: any) => {
 app.use(express.json({ limit: '50mb' }));
 app.use(cors())
 app.use(routes)
-
-// server.listen(port)
-
 
 if (cluster.isMaster) {
     console.log(`[SERVER]: Master ${process.pid} is running`);
