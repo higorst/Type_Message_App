@@ -4,7 +4,14 @@ import redisConfig from '../config/redis'
 import * as jobs from '../jobs'
 
 const queues = Object.values(jobs).map(job => ({
-    bull: new Queue(job.key, redisConfig),
+    bull: new Queue(job.key,
+        {
+            redis: {
+                host: "127.0.0.1",
+                port: 6379,
+            },
+        }
+    ),
     name: job.key,
     handle: job.handle,
     options: job.options,
@@ -27,8 +34,8 @@ export default {
             queue.bull.on('failed', (job: any, err: any) => {
                 console.log()
                 console.log(`[QUEUE]: Job ${queue.name} has been failed\n         Inserting a new job`)
-                if (queue.name === 'JobSendMessage'){
-                    const { 
+                if (queue.name === 'JobSendMessage') {
+                    const {
                         id_contact,
                         user_contact,
                         image_contact,

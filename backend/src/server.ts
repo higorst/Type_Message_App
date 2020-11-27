@@ -16,7 +16,10 @@ import cors from 'cors'
 const cluster = require('cluster');
 const numCPUs = require('os').cpus().length;
 
-const port = process.env.PORT || 3000
+// const port = process.env.PORT || 3000
+
+const { NODE_INSTANCE } = process.env
+const port = 3000 + parseInt(NODE_INSTANCE ? NODE_INSTANCE : '0')
 
 // const { NODE_INSTANCE } = process.env
 // const port = 3001 + parseInt(NODE_INSTANCE)
@@ -46,23 +49,18 @@ app.use(cors())
 app.use(routes)
 
 // server.listen(port)
+
+
 if (cluster.isMaster) {
-    console.log(`Master ${process.pid} is running`);
-  
-    // Fork workers.
-    for (let i = 0; i <= numCPUs; i++) {
-      cluster.fork();
-    }
-  
+    console.log(`[SERVER]: Master ${process.pid} is running`);
+
     cluster.on('exit', (worker: any, code: any, signal: any) => {
       console.log(`[SERVER]: worker ${worker.process.pid} died`);
     });
+
   } else {
     // Workers can share any TCP connection
     // In this case it is an HTTP server
-    server.listen(port, () => {
-        console.log(`server listening at port ${port}`)
-    });
-  
-    console.log(`[SERVER]: Worker ${process.pid} started`);
+    server.listen(port);  
+    console.log(`[SERVER]: Worker ${process.pid} started at port ${port}`);
   }
