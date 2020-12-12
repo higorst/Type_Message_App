@@ -1,6 +1,10 @@
 {
-    "type": "sqlite",
-    "database": "./src/database/database.sqlite",
+    "type": "mysql",
+    "host": "database-type.cyafh54kjd3d.us-east-1.rds.amazonaws.com",
+    "port": 3306,
+    "username": "admin",
+    "password": "typeadmin",
+    "database": "typeapp",
     "migrations": [
         "./src/database/migrations/*.ts"
     ],
