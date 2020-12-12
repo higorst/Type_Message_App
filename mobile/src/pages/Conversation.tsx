@@ -187,7 +187,7 @@ function Conversation(props: ContactProps) {
 
     useEffect(() => {
         // scroll?.scrollTo({ x: 0, y: 0, animated: true });
-        if (props.message_redux.conversation_id === params.id_conversation) {
+        if (props.message_redux.conversation_id === params.id_conversation && props.message_redux.message) {
             setMessages([...messages, props.message_redux])
         }
     }, [props.message_redux])

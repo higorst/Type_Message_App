@@ -2,7 +2,7 @@ import axios from 'axios'
 import Constants from '../constants/Constants';
 
 const api = axios.create({
-    baseURL: Constants.baseURL
+    baseURL: Constants.baseURL,
 })
 
 export default api

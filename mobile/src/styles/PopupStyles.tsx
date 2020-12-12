@@ -9,7 +9,7 @@ const PopupStyles = StyleSheet.create({
         padding: 10,
 
         position: 'absolute',
-        bottom: 50,
+        top: 50,
         elevation: 5,
         
         justifyContent: 'center',
