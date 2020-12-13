@@ -23,52 +23,52 @@
 
 <div style="text-align:center"><img src="/assets/app.gif" /></div>
 
-Aplicação móvel distribuída desenvolvida durante a disciplina de Sistemas Distribuídos, no curso de Engenharia de Computação. Basicamente a aplicação é um aplicativo de mensagens entre usuários, do quais podem:
+Distributed mobile application developed during the Distributed Systems discipline, in the Computer Engineering course. Basically the application is a messaging application between users, from which they can:
 
-- Criar uma conta;
-- Consultar todas as contas disponíveis;
-- Visualizar os usuários online;
-- Selecionar um usuário para conversar;
+- Create an account;
+- Consult all available accounts;
+- View users online;
+- Select a user to chat;
 
-A modelagem do sistema garante:
+The modeling of the system guarantees:
 
-- Escalonamento vertical
-  - Cada servidor funciona em modo cluster, que cria uma instância para cada núcleo da máquina que o executa;
-- Escalonamento horizontal
-  - O balanceador garante a inserção de várias instâncias do servidor;
-  - O Redis garante a sincronia das instâncias do SocketIO em cada EC2 da AWS;
-- Consistência de dados
-  - A modelagem possui uma instância principal e duas réplicas secundárias;
+- Vertical scaling
+   - Each server works in cluster mode, which creates an instance for each core of the machine that runs it;
+- Horizontal scaling
+   - The balancer guarantees the insertion of several instances of the server;
+   - Redis guarantees the synchronization of the SocketIO instances in each AWS EC2;
+- Data consistency
+   - The modeling has a main instance and two secondary replicas;
   
 ***
 #### <a id="app" />Use App
 
-- 1ª Opção:
-  - Instale o Expo
-  - Acesse: https://expo.io/@higorsj/projects/type
-  - Escanear o qr-code e usar a aplicação
-- 2ª Opção:
-  - Faça o download do apk: https://exp-shell-app-assets.s3.us-west-1.amazonaws.com/android/%40higorsj/type-257b5c7e956c45cd85dd0289de13491c-signed.apk 
-  - Instale no seu smartphone
+- 1st Option:
+  - Install Expo
+  - Access: https://expo.io/@higorsj/projects/type
+  - Scan the qr-code and use the application
+- 2nd Option:
+  - Download the apk: https://exp-shell-app-assets.s3.us-west-1.amazonaws.com/android/%40higorsj/type-257b5c7e956c45cd85dd0289de13491c-signed.apk 
+  - Install on your smartphone
 
 ***
 #### <a id="server" />System Design
 
-Estrutura do sistema hospedado na Amazon AWS.
+System structure hosted on Amazon AWS.
 
 - Message Queue
-  - Fila de envio de mensagens a usuários online;
+   - Queue for sending messages to online users;
 - Store Queue
-  - Fila para armazenamento de mensagens destinadas a usuários offline;
+   - Queue to store messages for offline users;
 - Balancer
-  - Estrutura responsável pelo balanceamento dos usuários entre as instâncias EC2 do servidor;
+   - Structure responsible for balancing users between EC2 instances of the server;
 - Message Server
-  - Servidor alocado em uma instância EC2 da AWS;
-  - Servidor para tratamento do recebimento e envio das mensagens entre usuários;
-  - Gerenciamento de usuários;
+   - Server allocated in an AWS EC2 instance;
+   - Server for handling the receipt and sending of messages between users;
+   - User management;
 - RDS
-  - Primary: Instância primário do RDS MySQL;
-  - Replica: Réplicas da instância primária para garantir a consistência de dados;
+   - Primary: RDS MySQL primary instance;
+   - Replica: Replicas of the primary instance to ensure data consistency;
   
 <div style="text-align:center"><img src="/assets/design.png" /></div>
 
