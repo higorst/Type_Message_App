@@ -21,7 +21,7 @@
 ***
 #### <a id="overview" />Overview
 
-<div style="text-align:center"><img src="/assets/app.mp4" /></div>
+<div style="text-align:center"><img src="/assets/app.gif" /></div>
 
 Aplicação móvel distribuída desenvolvida durante a disciplina de Sistemas Distribuídos, no curso de Engenharia de Computação. Basicamente a aplicação é um aplicativo de mensagens entre usuários, do quais podem:
 
