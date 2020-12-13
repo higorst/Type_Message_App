@@ -1,12 +1,12 @@
 # Type
 ## A app chat mobile with message queue
 [![Build Status](https://travis-ci.org/joemccann/dillinger.svg?branch=master)](https://travis-ci.org/joemccann/dillinger)
-[![React](https://simpleicons.org/icons/react.svg)]()
+<!-- [![React](https://simpleicons.org/icons/react.svg)]()
 [![AWS](https://simpleicons.org/icons/amazonaws.svg)]()
 [![Redis](https://simpleicons.org/icons/redis.svg)]()
 [![MySQL](https://simpleicons.org/icons/mysql.svg)]()
 [![Docker](https://simpleicons.org/icons/docker.svg)]()
-[![SocketIO](https://simpleicons.org/icons/socket-dot-io.svg)]()
+[![SocketIO](https://simpleicons.org/icons/socket-dot-io.svg)]() -->
 
 ***
 
@@ -15,17 +15,13 @@
 > Graduating in Computer Engineering - UFRB <br>
 
 - [Overview](#overview)
+- [Use App](#app)
 - [System Design](#server)
-- [Client](#client)
-- [Package Sending and Receiving](#packages)
-- [Multi-Thread Implementation](#multithread)
-- [Cache Implementation](#cache)
-- [File Access](#file)
-- [Results](#results)
-- [Dependencies](#dependecies)
 
 ***
 #### <a id="overview" />Overview
+
+<div style="text-align:center"><img src="/assets/app.mp4" /></div>
 
 Aplicação móvel distribuída desenvolvida durante a disciplina de Sistemas Distribuídos, no curso de Engenharia de Computação. Basicamente a aplicação é um aplicativo de mensagens entre usuários, do quais podem:
 
@@ -45,8 +41,18 @@ A modelagem do sistema garante:
   - A modelagem possui uma instância principal e duas réplicas secundárias;
   
 ***
+#### <a id="app" />Use App
+
+- 1ª Opção:
+  - Instale o Expo
+  - Acesse: https://expo.io/@higorsj/projects/type
+  - Escanear o qr-code e usar a aplicação
+- 2ª Opção:
+  - Faça o download do apk: https://exp-shell-app-assets.s3.us-west-1.amazonaws.com/android/%40higorsj/type-257b5c7e956c45cd85dd0289de13491c-signed.apk 
+  - Instale no seu smartphone
+
+***
 #### <a id="server" />System Design
-[![AWS](https://simpleicons.org/icons/amazonaws.svg)]()
 
 Estrutura do sistema hospedado na Amazon AWS.
 
