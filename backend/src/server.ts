@@ -7,7 +7,6 @@ import routes from './routes'
 import cors from 'cors'
 
 const cluster = require('cluster');
-const numCPUs = require('os').cpus().length;
 
 const { NODE_INSTANCE } = process.env
 const port = 3000 + parseInt(NODE_INSTANCE ? NODE_INSTANCE : '0')
