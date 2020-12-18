@@ -138,7 +138,7 @@ function Conversation(props: ContactProps) {
             user: params.user,
             password: params.password,
             image: params.image,
-            view: 'conversation' + String(params.id_conversation)
+            view: 'conversation' + String(new Date())
         })
     }
 

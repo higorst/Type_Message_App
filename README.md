@@ -50,6 +50,11 @@ The modeling of the system guarantees:
 - 2nd Option:
   - Download the apk: https://exp-shell-app-assets.s3.us-west-1.amazonaws.com/android/%40higorsj/type-257b5c7e956c45cd85dd0289de13491c-signed.apk 
   - Install on your smartphone
+***
+Atenção: Funcionamento do backend interrompido por tempo indeterminado!
+Attention: Backend operation interrupted indefinitely!
+***
+
 
 ***
 #### <a id="server" />System Design
